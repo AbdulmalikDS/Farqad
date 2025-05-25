@@ -24,13 +24,14 @@
 - **Financial Data Visualization**
   - Dynamic chart generation from extracted financial data
   - Interactive data visualization for insights and recommendations  
-  - ![image](https://github.com/user-attachments/assets/6d70fa1a-115a-4f21-a1b4-df8b721fd599)
+  - ![image](https://github.com/user-attachments/assets/ac2987b1-57be-4230-8216-925ce8616166)
 
 
 - **User & Admin Management**
   - Secure authentication system
   - User role management and session handling
-  - Admin tools for monitoring users, managing data, and improving performance  
+  - Admin tools for monitoring users, managing data, and improving performance
+  - ![image](https://github.com/user-attachments/assets/6edb54e3-4d3b-4176-8c5a-114bb06700e9)
   - ![image](https://github.com/user-attachments/assets/4f6f35ce-2117-4208-89ce-383827b7c643)
 
 
