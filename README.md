@@ -195,6 +195,7 @@ This project is licensed under the MIT License – see the LICENSE file for deta
 For questions or support:
 - GitHub: [farqad](https://github.com/farqad)
 - Email: [af.alquwayfili@gmail.com]
+- LinkedIn: [Abdulmalik-Alquwayfili]
 
 
 
