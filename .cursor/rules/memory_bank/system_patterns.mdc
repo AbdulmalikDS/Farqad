@@ -1,0 +1,59 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# System Patterns: Personal Finance Chatbot
+
+## System Architecture
+-   **Frontend**: A web-based user interface, currently a Flask application (`src/front-end/app.py`), providing chat capabilities, document upload functionality, and a financial insights dashboard. This component is responsible for rendering information and capturing user input.
+-   **Backend API**: A FastAPI application (`src/main.py`) serves as the central nervous system. It handles all incoming API requests from the frontend, orchestrates business logic, manages user sessions, and interfaces with various downstream services (database, AI models, etc.).
+-   **AI/LLM Integration**: The backend connects to external or self-hosted Large Language Models (LLMs) for advanced Natural Language Understanding (NLU), response generation, and complex data analysis (e.g., deriving insights from financial data). This is abstracted via `LLMProviderFactory` for flexibility.
+-   **Vector Database**: Utilized for Retrieval Augmented Generation (RAG) capabilities, especially for querying against processed financial documents and providing contextually relevant answers. Managed via `VectorDBProviderFactory`.
+-   **Primary Database**: A MongoDB instance (`app.db_client` in `src/main.py`), accessed asynchronously, stores persistent data such as user profiles, conversation histories, processed financial document metadata, and user-specific settings.
+-   **Document Processing Module**: A logical component (potentially a set of services or libraries) responsible for handling uploaded financial documents. This includes OCR, data extraction, structuring, and embedding generation.
+
+## Key Technical Decisions
+-   **Python & FastAPI for Backend**: Chosen for Python's rich data science ecosystem and FastAPI's high performance, asynchronous capabilities, and ease of development for RESTful APIs.
+-   **Modular AI/DB Integration**: The use of Factory patterns (`LLMProviderFactory`, `VectorDBProviderFactory`) promotes loose coupling and allows for easier swapping or addition of different AI service providers or vector database technologies in the future.
+-   **Stateless Services (Preference)**: Backend services should be designed to be as stateless as possible, relying on the database or distributed cache for session/state management, to improve scalability and resilience.
+
+## Design Patterns in Use
+-   **Factory Pattern**: For instantiating LLM and VectorDB client providers (`LLMProviderFactory`, `VectorDBProviderFactory`).
+-   **API Gateway (Implicit via FastAPI)**: FastAPI naturally acts as an API gateway for various backend services and routes.
+-   **Router Pattern**: FastAPI routers (`app.include_router`) are employed to organize API endpoints into logical modules (e.g., `base`, `data`, `nlp`).
+-   **Asynchronous Programming**: Leveraged throughout the FastAPI backend using `async` and `await` for non-blocking I/O operations, crucial for performance when dealing with external API calls and database interactions.
+
+## Component Relationships (Overall System)
+```mermaid
+flowchart TD
+    UserInterface["User Interface (Flask Frontend)"]
+    BackendAPI["FastAPI Backend"]
+    MongoDB[(MongoDB - Primary DB)]
+    LLMService["LLM Provider Interface"]
+    VectorDB[(Vector Database Interface)]
+    DocProcModule["Document Processing Module"]
+
+    UserInterface -- HTTP API Calls (Chat, Doc Upload, Dashboard Data) --> BackendAPI
+    BackendAPI -- CRUD Operations (User Data, Convo History, Doc Meta) --> MongoDB
+    BackendAPI -- NLP, Generation, Analysis Queries --> LLMService
+    BackendAPI -- Semantic Search, RAG Queries --> VectorDB
+    BackendAPI -- Document Processing Tasks --> DocProcModule
+    DocProcModule -- Text Extraction, Embedding --> LLMService
+    DocProcModule -- Store/Retrieve Embeddings --> VectorDB
+```
+
+## Document Analysis Pipeline (Conceptual Flow)
+```mermaid
+flowchart TD
+    A[User Uploads Document via Frontend] --> B{Backend API Receives File};
+    B --> C[DocProcModule: Validate & Store Raw File];
+    C --> D{Perform OCR (if image/PDF)};
+    D --> E[Extract Text Content];
+    E --> F[LLMService: Clean & Structure Text Data];
+    F --> G[LLMService: Generate Embeddings for Text Chunks];
+    G --> H[VectorDB: Store Text Chunks & Embeddings];
+    H --> I[BackendAPI: Document Processed, Ready for Q&A];
+    I --> J[User Can Now Ask Questions About Document Content];
+```
+

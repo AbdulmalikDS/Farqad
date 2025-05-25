@@ -11,7 +11,7 @@ class OpenAIProvider(LLMInterface):
                        default_generation_temperature: float=0.1):
         
         self.api_key = api_key
-        self.api_url = api_url
+        self.api_url = api_url if api_url and len(api_url) else None
 
         self.default_input_max_characters = default_input_max_characters
         self.default_generation_max_output_tokens = default_generation_max_output_tokens
@@ -102,4 +102,3 @@ class OpenAIProvider(LLMInterface):
 
 
     
-

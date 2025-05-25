@@ -1,0 +1,1968 @@
+/* Chart fixes and improvements */
+
+/* Chart box styling with enhanced visuals */
+.chart-box {
+  background: linear-gradient(135deg, rgba(43, 36, 90, 0.85) 0%, rgba(30, 27, 75, 0.9) 100%);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(124, 58, 237, 0.15);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glow effect on hover */
+.chart-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(124, 58, 237, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-color: rgba(139, 92, 246, 0.5);
+  background: linear-gradient(135deg, rgba(45, 39, 95, 0.9) 0%, rgba(35, 30, 85, 0.95) 100%);
+}
+
+/* Add subtle purple accent on the chart box */
+.chart-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 60%;
+  background: linear-gradient(to bottom, #8b5cf6, transparent);
+  border-top-left-radius: 18px;
+  opacity: 0.7;
+}
+
+/* Add subtle pulse animation to primary chart */
+.primary-chart {
+  animation: chartPulse 8s ease-in-out infinite;
+}
+
+@keyframes chartPulse {
+  0% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 8px 32px rgba(124, 58, 237, 0.25); }
+  100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+}
+
+/* More styled headings */
+.chart-box h3 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: var(--text-light);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.03em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  text-transform: uppercase;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.chart-box h3::before {
+  content: '📈';
+  margin-right: 12px;
+  font-size: 20px;
+  background-color: rgba(124, 58, 237, 0.3);
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.primary-chart h3::before {
+  content: '💰';
+  background-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Secondary charts container with refined grid */
+.secondary-charts-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 16px;
+  grid-column: 1 / -1;
+}
+
+/* Chart container with improved height and loading state */
+.chart-container {
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(30, 25, 65, 0.25);
+  padding: 10px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin: 8px 0;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.primary-chart .chart-container {
+  min-height: 240px;
+  margin-bottom: 16px;
+  background: rgba(30, 25, 65, 0.2);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 30%);
+}
+
+/* Add subtle animated background for charts */
+.chart-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
+  opacity: 0.7;
+  z-index: 0;
+  animation: pulseGradient 12s ease-in-out infinite;
+}
+
+@keyframes pulseGradient {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+/* Chart loading indicator */
+.chart-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 17, 33, 0.7);
+  z-index: 10;
+  backdrop-filter: blur(3px);
+}
+
+.chart-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(99, 102, 241, 0.2);
+  border-top-color: rgba(99, 102, 241, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.chart-loading-text {
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Data point hover effects */
+.chart-data-tooltip {
+  background: rgba(29, 16, 57, 0.95) !important;
+  border: 1px solid rgba(124, 58, 237, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(10px) !important;
+  color: white !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 12px !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Chart interactions */
+.chart-box canvas {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chart-box:hover canvas {
+  filter: brightness(1.05);
+}
+
+/* Chart legend styling */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.legend-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Chart type indicators in corner */
+.chart-type-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  background-color: rgba(124, 58, 237, 0.2);
+  color: var(--text-light);
+  padding: 3px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Time selector enhanced styling */
+.time-range-selector {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.time-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.time-btn:hover {
+  color: var(--text-light);
+  border-color: var(--primary-light);
+  background-color: rgba(124, 58, 237, 0.1);
+}
+
+.time-btn.active {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+}
+
+.time-btn.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Make sure chat input is properly positioned */
+.chat-input {
+  position: fixed;
+  bottom: 0;
+  left: 240px; /* Width of sidebar */
+  right: 480px; /* Width of chart panel */
+  padding: 16px;
+  background: rgba(19, 9, 31, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-color);
+  z-index: 10;
+}
+
+/* Data highlights with glowing effect */
+.highlight-value {
+  position: absolute;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.highlight-value .value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-light);
+  text-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+}
+
+.highlight-value .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Chart panel updating animation */
+.chart-panel.updating {
+  animation: panel-pulse 1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes panel-pulse {
+  0%, 100% {
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    box-shadow: -5px 0 30px rgba(124, 58, 237, 0.4);
+  }
+}
+
+/* Chart box updating animation */
+.chart-box.updating {
+  animation: chart-update-pulse 1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes chart-update-pulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 40px rgba(124, 58, 237, 0.4);
+    border-color: rgba(124, 58, 237, 0.5);
+  }
+}
+
+/* Interactive chart features */
+.chart-interaction-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.chart-box:hover .chart-interaction-overlay {
+  opacity: 1;
+  background-color: rgba(19, 9, 31, 0.7);
+}
+
+.chart-interaction-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.chart-action-btn {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.5);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.chart-action-btn:hover {
+  background: rgba(124, 58, 237, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Chart toggle button */
+.chart-toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(124, 58, 237, 0.3) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.chart-toggle-button:hover {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(124, 58, 237, 0.4) 100%);
+  transform: translateY(-2px);
+}
+
+.toggle-icon {
+  font-size: 16px;
+}
+
+/* Enhanced tabular data display */
+.data-table-container {
+  animation: fadeIn 0.5s ease;
+  margin: 16px;
+  background: rgba(29, 16, 57, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.data-table-container h3 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: var(--text-light);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.data-table-container h3::before {
+  content: '📊';
+  margin-right: 10px;
+  background-color: rgba(124, 58, 237, 0.2);
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.dynamic-table-container table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dynamic-table-container th {
+  background-color: rgba(124, 58, 237, 0.2);
+  text-align: left;
+  padding: 12px 16px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.dynamic-table-container td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.dynamic-table-container tr:hover td {
+  background-color: rgba(124, 58, 237, 0.1);
+}
+
+.dynamic-table-container tr:last-child td {
+  border-bottom: none;
+}
+
+.data-highlight {
+  color: var(--primary-light);
+  font-weight: 600;
+  position: relative;
+}
+
+.total-row {
+  background-color: rgba(124, 58, 237, 0.1);
+}
+
+.total-row td {
+  font-weight: 600;
+  border-top: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+/* Hidden chart style */
+.charts-hidden .chart-container {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.charts-hidden .chart-box {
+  height: 60px;
+  overflow: hidden;
+}
+
+/* Time range selector - improved styles */
+.chart-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-range-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Add animation for chart reloading */
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.chart-refresh-icon {
+  animation: rotate360 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Media queries */
+@media (max-width: 1200px) {
+  .chat-input {
+    right: 340px; /* Adjusted for smaller chart panel */
+  }
+  
+  .chart-box h3 {
+    font-size: 14px;
+  }
+  
+  .chart-container {
+    min-height: 160px;
+  }
+  
+  .primary-chart .chart-container {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 992px) {
+  .chat-input {
+    right: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-input {
+    left: 0;
+    right: 0;
+  }
+  
+  .chart-box h3 {
+    font-size: 14px;
+  }
+  
+  .chart-container {
+    min-height: 160px;
+  }
+  
+  .primary-chart .chart-container {
+    min-height: 200px;
+  }
+}
+
+/* Chart Fixes CSS */
+
+/* Fix chart panel positioning */
+.chart-panel {
+  order: 2;
+  width: 35%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, rgba(35, 25, 80, 0.85) 0%, rgba(25, 15, 60, 0.95) 100%);
+  border-left: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  padding: 20px;
+  z-index: 100;
+  overflow-y: auto;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  visibility: visible;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.chart-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.chart-panel-header h2 {
+  font-size: 18px;
+  color: var(--text-light);
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.chart-panel-header h2::before {
+  content: '📊';
+  margin-right: 8px;
+}
+
+.chart-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.chart-panel.hidden {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Chart boxes with proper spacing */
+.chart-box {
+  background: rgba(30, 20, 50, 0.6);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-box h3 {
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: white;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.chart-box h3::before {
+  content: "📈";
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* Chart container with minimum height */
+.chart-container {
+  position: relative;
+  min-height: 200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-chart .chart-container {
+  min-height: 280px;
+}
+
+/* Toggle chart button styling */
+#toggle-all-charts-btn {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.9) 0%, rgba(99, 47, 190, 0.9) 100%);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  transition: all 0.3s ease;
+  z-index: 1001;
+  opacity: 1;
+}
+
+#toggle-all-charts-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+  opacity: 1;
+}
+
+/* Persistent toggle button */
+.persistent-chart-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.9) 0%, rgba(99, 47, 190, 0.9) 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: pulse 2s infinite;
+  display: none;
+}
+
+.persistent-chart-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5); }
+  70% { box-shadow: 0 0 0 15px rgba(124, 58, 237, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
+}
+
+/* Adjust chat area and input when charts are visible/hidden */
+.chat-area {
+  transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1), padding-right 0.4s ease;
+  width: 100%;
+  max-width: 100%;
+  padding-right: 0;
+}
+
+body:not(.charts-hidden) .chat-area {
+  width: 100%;
+  padding-right: 0;
+}
+
+.chat-input {
+  transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1), max-width 0.4s ease, right 0.4s ease;
+  width: 100%;
+  max-width: 100%;
+  right: 0;
+}
+
+body:not(.charts-hidden) .chat-input {
+  width: 100%;
+  max-width: 100%;
+  right: 0;
+}
+
+body.charts-hidden .chat-input {
+  width: 100%;
+  max-width: 100%;
+  right: 0;
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 1200px) {
+  .chart-panel {
+    width: 0;
+    display: none;
+  }
+  
+  body:not(.charts-hidden) .chat-area {
+    width: 100%;
+    padding-right: 0;
+  }
+  
+  body:not(.charts-hidden) .chat-input {
+    width: 100%;
+    max-width: 100%;
+    right: 0;
+  }
+}
+
+@media (max-width: 992px) {
+  .chart-panel {
+    width: 0;
+    display: none;
+  }
+  
+  body:not(.charts-hidden) .chat-area {
+    width: 100%;
+    padding-right: 0;
+  }
+  
+  body:not(.charts-hidden) .chat-input {
+    width: 100%;
+    max-width: 100%;
+    right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-panel {
+    display: none;
+  }
+  
+  body:not(.charts-hidden) .chat-area {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+  
+  body:not(.charts-hidden) .chat-input {
+    width: 100%;
+    max-width: 100%;
+    bottom: 0;
+    right: 0;
+  }
+  
+  .chart-panel.hidden {
+    transform: translateY(100%);
+  }
+}
+
+/* Chart panel display fixes */
+.charts-panel {
+    display: none; /* Hide by default */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 450px;
+    max-height: calc(100vh - 100px);
+    z-index: 1010;
+    overflow: auto;
+    background: linear-gradient(145deg, rgba(30, 15, 60, 0.97) 0%, rgba(26, 9, 51, 0.99) 100%);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(138, 79, 255, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 0;
+}
+
+.charts-panel.show {
+    display: flex !important; /* Use !important to override any inline styles */
+    flex-direction: column;
+    animation: panelFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-title h3 {
+    margin: 0;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-panel-btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(75, 43, 135, 0.5);
+    color: white;
+    border: none;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.close-panel-btn:hover {
+    background: rgba(99, 55, 168, 0.6);
+    transform: scale(1.1);
+}
+
+.panel-content {
+    padding: 15px !important;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Message styling without outer box */
+.message {
+    max-width: 85%;
+    margin-bottom: 1.5rem !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.message-content {
+    background-color: rgba(45, 22, 87, 0.5) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    line-height: 1.5;
+    padding: 12px 16px;
+    box-shadow: none !important;
+    width: fit-content;
+}
+
+.message.user .message-content {
+    background-color: rgba(75, 43, 135, 0.5) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    margin-left: auto;
+}
+
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.message.user .message-container {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(75, 43, 135, 0.5) !important;
+    border: 1px solid rgba(138, 79, 255, 0.3) !important;
+    border-radius: 50% !important;
+    margin: 0 10px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Fix chart alignment */
+.chart-container-wrapper {
+    padding: 15px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+    background: rgba(43, 36, 90, 0.4) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+.chart-container-wrapper h4 {
+    margin: 0 0 15px 0 !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+    color: white !important;
+    font-size: 16px !important;
+    text-align: center !important;
+}
+
+/* Make sure charts are properly sized */
+.chart-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 150px !important;
+    background: rgba(30, 25, 65, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+}
+
+/* Ensure the pie chart is properly displayed */
+.primary-chart-wrapper .chart-container {
+    min-height: 250px !important;
+}
+
+/* Fix financial summary table */
+.financial-table-wrapper {
+    width: 100% !important;
+    padding: 15px !important;
+    margin-bottom: 15px !important;
+    background: rgba(43, 36, 90, 0.4) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+.financial-summary h3 {
+    margin: 0 0 15px 0 !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+    color: white !important;
+    font-size: 16px !important;
+    text-align: center !important;
+}
+
+/* Ensure proper table styling */
+.financial-table {
+    width: 100% !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.financial-table th {
+    background-color: rgba(75, 43, 135, 0.3);
+    color: white;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.financial-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.financial-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Chart color palette - custom variables for use in JavaScript */
+:root {
+  --chart-color-1: rgba(139, 92, 246, 0.85); /* Primary purple */
+  --chart-color-2: rgba(168, 85, 247, 0.85); /* Secondary purple */
+  --chart-color-3: rgba(91, 33, 182, 0.85); /* Deep purple */
+  --chart-color-4: rgba(124, 58, 237, 0.85); /* Bright purple */
+  --chart-color-5: rgba(199, 210, 254, 0.85); /* Light purple/lavender */
+  --chart-color-6: rgba(67, 56, 202, 0.85); /* Indigo */
+  --chart-color-7: rgba(109, 40, 217, 0.85); /* Darker purple */
+  --chart-color-8: rgba(167, 139, 250, 0.85); /* Medium purple */
+}
+
+/* Improve chart background */
+.chart-container {
+  background: rgba(25, 20, 55, 0.3);
+  backdrop-filter: blur(8px);
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  margin: 15px 0;
+  overflow: hidden;
+}
+
+/* Chart grid lines styling */
+.chartjs-grid-line {
+  stroke: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Chart tick labels */
+.chartjs-tick {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 11px !important;
+}
+
+/* Custom chart data point styles */
+.chartjs-point {
+  stroke: rgba(139, 92, 246, 0.9) !important;
+  stroke-width: 2 !important;
+}
+
+/* Financial dashboard section styling */
+.financial-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+/* Panel content spacing */
+.panel-content {
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px !important;
+  align-items: center;
+}
+
+.panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+  background: rgba(30, 27, 75, 0.3);
+  border-radius: 4px;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 4px;
+}
+
+/* Revenue trend and volume analysis styling */
+.revenue-trend, .volume-analysis {
+  position: relative;
+  padding: 20px;
+  background: rgba(43, 36, 90, 0.4);
+  border-radius: 20px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.trend-header, .analysis-header {
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+  padding-bottom: 12px;
+}
+
+/* Star background color matching */
+.chart-box {
+  background: linear-gradient(135deg, rgba(43, 36, 90, 0.85) 0%, rgba(30, 27, 75, 0.9) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.chart-box:hover {
+  background: linear-gradient(135deg, rgba(45, 39, 95, 0.9) 0%, rgba(35, 30, 85, 0.95) 100%);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.chart-panel {
+  background: linear-gradient(135deg, rgba(35, 25, 80, 0.85) 0%, rgba(25, 15, 60, 0.95) 100%);
+  border-left: 1px solid rgba(139, 92, 246, 0.3);
+  display: none; /* Hide the chart panel */
+}
+
+.charts-panel {
+  background: linear-gradient(145deg, rgba(30, 30, 60, 0.95) 0%, rgba(22, 22, 45, 0.98) 100%);
+}
+
+/* Hide chart panel completely */
+.chart-panel, .charts-panel {
+  display: none;
+  background: linear-gradient(145deg, rgba(30, 15, 60, 0.95) 0%, rgba(26, 9, 51, 0.98) 100%);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+  z-index: 1000;
+}
+
+/* Ensure the chart panel can be shown */
+.charts-panel.show {
+  display: flex !important;
+}
+
+/* Add sidebar styling to match galaxy theme */
+.sidebar {
+  background: linear-gradient(to bottom, var(--galaxy-purple-dark), var(--galaxy-purple-medium));
+  border-right: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.sidebar-header {
+  background-color: rgba(30, 15, 60, 0.7);
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.sidebar-header span {
+  color: var(--galaxy-star);
+}
+
+.user-account-info {
+  background-color: rgba(45, 22, 87, 0.4);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.chat-mode-btn {
+  background-color: rgba(45, 22, 87, 0.4);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+  color: var(--galaxy-text);
+}
+
+.chat-mode-btn:hover {
+  background-color: rgba(75, 43, 135, 0.6);
+}
+
+.chat-mode-btn.active {
+  background-color: rgba(138, 79, 255, 0.3);
+  border-color: rgba(138, 79, 255, 0.5);
+}
+
+.active-document-container {
+  background-color: rgba(45, 22, 87, 0.4);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.conversation-item {
+  color: var(--galaxy-text);
+}
+
+.conversation-item:hover {
+  background-color: rgba(75, 43, 135, 0.6);
+}
+
+.new-chat-btn {
+  background: var(--galaxy-gradient);
+  border: 1px solid rgba(138, 79, 255, 0.5);
+}
+
+.new-chat-btn:hover {
+  background-color: var(--galaxy-purple-light);
+  box-shadow: 0 4px 12px rgba(138, 79, 255, 0.4);
+}
+
+/* Enhance message styling */
+.message {
+  max-width: 85%;
+  margin-bottom: 1.5rem !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.message-avatar {
+  background-color: rgba(75, 43, 135, 0.5) !important;
+  border: 1px solid rgba(138, 79, 255, 0.3) !important;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.message-content {
+  background-color: rgba(45, 22, 87, 0.5) !important;
+  color: var(--galaxy-text) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  line-height: 1.5;
+  padding: 12px 16px;
+  box-shadow: none !important;
+}
+
+.message.user .message-content {
+  background-color: rgba(75, 43, 135, 0.5) !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+/* Make sure the toggle charts button is not affected by conflicts */
+.toggle-charts-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: rgba(99, 102, 241, 0.2) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  margin-right: 10px !important;
+  z-index: 50 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+}
+
+.toggle-charts-btn:hover {
+  background: rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Ensure panel can be toggled */
+.right-panel.charts-panel {
+  position: fixed;
+  width: 400px;
+  height: 600px;
+  top: 60px;
+  right: 20px;
+}
+
+/* Add root variables for galaxy theme */
+:root {
+  --galaxy-purple-dark: #1a0933;
+  --galaxy-purple-medium: #2d1657;
+  --galaxy-purple-light: #4b2b87;
+  --galaxy-accent: #8a4fff;
+  --galaxy-star: #e2d9ff;
+  --galaxy-text: #e2d9ff;
+  --galaxy-card-bg: rgba(30, 15, 60, 0.7);
+  --galaxy-gradient: linear-gradient(135deg, var(--galaxy-purple-dark) 0%, var(--galaxy-purple-medium) 100%);
+}
+
+/* Update body and background */
+body {
+  background-color: var(--galaxy-purple-dark);
+}
+
+.bg-stars {
+  background-color: var(--galaxy-purple-dark);
+  background-image: radial-gradient(var(--galaxy-star) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Chat area styling */
+.chat-area {
+  transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1), padding-right 0.4s ease;
+  width: 100%;
+  max-width: 100%;
+  padding-right: 0;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.message-content {
+  background-color: var(--galaxy-card-bg);
+  color: var(--galaxy-text);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+}
+
+.message.user .message-content {
+  background-color: rgba(75, 43, 135, 0.7);
+  border: 1px solid rgba(138, 79, 255, 0.5);
+}
+
+/* Panel styling */
+.charts-panel {
+  display: none;
+  background: linear-gradient(145deg, rgba(30, 15, 60, 0.95) 0%, rgba(26, 9, 51, 0.98) 100%);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.charts-panel.show {
+  display: flex !important;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Toggle chart button styling */
+.toggle-charts-btn {
+  background: var(--galaxy-gradient);
+  border: 1px solid rgba(138, 79, 255, 0.5);
+  color: var(--galaxy-text);
+  transition: all 0.3s ease;
+}
+
+.toggle-charts-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(138, 79, 255, 0.5);
+  border: 1px solid rgba(138, 79, 255, 0.8);
+}
+
+/* Chart container styling */
+.chart-container-wrapper {
+  background: rgba(45, 22, 87, 0.4);
+  border: 1px solid rgba(138, 79, 255, 0.3);
+  border-radius: 10px;
+}
+
+.chart-container-wrapper h4 {
+  color: var(--galaxy-text) !important;
+  text-align: center !important;
+  margin-bottom: 12px !important;
+  font-size: 1rem !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Fix for scrolling chat area */
+.chat-messages {
+  overflow-y: auto !important; /* Force overflow to ensure scrolling works */
+  max-height: calc(80vh - 120px) !important;
+  padding-bottom: 80px !important;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--galaxy-accent) var(--galaxy-purple-dark);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--galaxy-purple-dark);
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: var(--galaxy-accent);
+  border-radius: 20px;
+}
+
+/* Adjust chat input */
+.chat-input {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--galaxy-purple-dark) !important;
+  border-top: 1px solid rgba(138, 79, 255, 0.3) !important;
+  z-index: 1000 !important;
+  width: 100%;
+  padding: 12px;
+}
+
+.input-container {
+  background-color: rgba(45, 22, 87, 0.4);
+  border: 1px solid rgba(138, 79, 255, 0.5);
+}
+
+.input-container:focus-within {
+  border-color: var(--galaxy-accent);
+  box-shadow: 0 0 10px rgba(138, 79, 255, 0.3);
+}
+
+/* Fix for chat section */
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  padding-bottom: 0;
+  position: relative;
+}
+
+/* Ensure background goes all the way */
+body, html {
+  background-color: var(--galaxy-purple-dark) !important;
+  height: 100%;
+  color: var(--galaxy-text);
+}
+
+/* Make charts panel visible when toggled */
+.charts-panel.show {
+  display: flex !important;
+  z-index: 1010;
+}
+
+/* Update the dashboard header */
+.dashboard-header {
+  background-color: rgba(30, 15, 60, 0.7) !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+  text-align: center !important;
+  padding: 12px 20px !important;
+}
+
+/* Style document list panel */
+.document-list-panel {
+  background: linear-gradient(145deg, rgba(30, 15, 60, 0.95) 0%, rgba(26, 9, 51, 0.98) 100%) !important;
+  border: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Style the conversation items in the sidebar */
+.conversation-item {
+  transition: all 0.2s ease;
+}
+
+.conversation-item:hover {
+  background-color: rgba(75, 43, 135, 0.6) !important;
+  transform: translateX(5px);
+}
+
+/* Style login/logout buttons */
+#login-btn, .logout-btn {
+  background-color: rgba(45, 22, 87, 0.4) !important;
+  border: 1px solid rgba(138, 79, 255, 0.3) !important;
+  color: var(--galaxy-text) !important;
+}
+
+#login-btn:hover, .logout-btn:hover {
+  background-color: rgba(75, 43, 135, 0.6) !important;
+}
+
+/* Better chart alignment and spacing */
+.panel-content {
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px !important;
+  align-items: center;
+}
+
+.chart-container-wrapper {
+  padding: 16px !important;
+  margin: 0 auto;
+  width: 90% !important;
+  border-radius: 14px !important;
+}
+
+.charts-row {
+  gap: 20px !important;
+  justify-content: center;
+  width: 90% !important;
+  margin: 0 auto;
+}
+
+.half-width {
+  width: calc(50% - 10px) !important;
+}
+
+/* Financial table spacing */
+.financial-table-wrapper {
+  width: 90% !important;
+  margin: 0 auto;
+  padding: 16px !important;
+}
+
+/* Remove message borders and use solid color backgrounds */
+.message-content {
+  background-color: rgba(45, 22, 87, 0.5) !important;
+  color: var(--galaxy-text) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  line-height: 1.5;
+  padding: 12px 16px;
+  box-shadow: none !important;
+}
+
+.message.user .message-content {
+  background-color: rgba(75, 43, 135, 0.5) !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+/* Ensure charts panel has proper styling */
+.charts-panel {
+  padding: 0 !important;
+  background: linear-gradient(145deg, rgba(30, 15, 60, 0.95) 0%, rgba(26, 9, 51, 0.98) 100%) !important;
+}
+
+/* Ensure proper panel header alignment */
+.panel-header {
+  padding: 14px 20px !important;
+}
+
+/* Add subtle hover effects for charts */
+.chart-container-wrapper:hover {
+  background-color: rgba(60, 30, 100, 0.4) !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Better chart container styling */
+.chart-container {
+  padding: 10px !important;
+}
+
+/* Chart section headers */
+.chart-container-wrapper h4 {
+  color: var(--galaxy-text) !important;
+  text-align: center !important;
+  margin-bottom: 12px !important;
+  font-size: 1rem !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Financial Overview header */
+.panel-title h3 {
+  font-size: 1.1rem !important;
+  color: var(--galaxy-text) !important;
+  text-shadow: 0 0 8px rgba(138, 79, 255, 0.5) !important;
+}
+
+/* Section title styling */
+.financial-table-wrapper h4 {
+  color: var(--galaxy-text) !important;
+  text-align: center !important;
+  margin-bottom: 12px !important;
+  font-size: 1rem !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Financial Overview title */
+.panel-content > div:first-child h4 {
+  font-size: 1.1rem !important;
+}
+
+/* Chart containers */
+.chart-container {
+  height: 100% !important;
+  min-height: 180px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Primary chart */
+.primary-chart-wrapper .chart-container {
+  min-height: 220px !important;
+}
+
+/* Fix for system messages (ones with dashes) */
+.message:has(.message-content:contains("-------")) {
+  display: none !important; /* Hide system messages with just dashes */
+}
+
+/* Alternative fix for system messages if the above selector doesn't work */
+.message .message-content:empty,
+.message .message-content:only-child {
+  display: none !important;
+}
+
+.message[data-sender="system"] {
+  display: none !important;
+}
+
+/* Fix for the financial dashboard layout */
+.panel-content {
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px !important;
+  overflow-y: auto !important;
+  max-height: 100% !important;
+}
+
+/* Better chart alignment and spacing */
+.chart-container-wrapper {
+  width: 100% !important;
+  padding: 15px !important;
+  margin: 0 !important;
+  border-radius: 14px !important;
+}
+
+/* Fix chart positioning */
+.chart-container {
+  position: relative !important;
+  height: auto !important;
+  min-height: 150px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Financial summary section */
+.financial-summary {
+  margin-top: 10px !important;
+  background-color: rgba(45, 22, 87, 0.4) !important;
+  border-radius: 14px !important;
+  padding: 15px !important;
+  width: 100% !important;
+}
+
+/* Fix the financial table */
+.financial-table-wrapper {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.financial-table.compact {
+  width: 100% !important;
+}
+
+.financial-table.compact table {
+  width: 100% !important;
+  border-spacing: 0 !important;
+}
+
+.financial-table.compact th,
+.financial-table.compact td {
+  padding: 8px 12px !important;
+  text-align: left !important;
+}
+
+/* Ensure the Revenue Trend chart is properly sized */
+.chart-container-wrapper:nth-of-type(2) {
+  margin-top: 20px !important;
+}
+
+/* Better spacing for the charts row */
+.charts-row {
+  width: 100% !important;
+  margin: 0 !important;
+  gap: 15px !important;
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+/* Financial summary title */
+.financial-summary h3 {
+  text-align: center !important;
+  margin-bottom: 15px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+  color: var(--galaxy-text) !important;
+  font-size: 1.1rem !important;
+}
+
+/* Source information styling */
+.source-button {
+    background: rgba(75, 43, 135, 0.5);
+    border: 1px solid rgba(138, 79, 255, 0.3);
+    color: var(--galaxy-text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s ease;
+}
+
+.source-button:hover {
+    background: rgba(99, 55, 168, 0.6);
+    transform: translateY(-2px);
+}
+
+.source-content {
+    margin-top: 8px;
+    padding: 10px;
+    background: rgba(45, 22, 87, 0.3);
+    border: 1px solid rgba(138, 79, 255, 0.2);
+    border-radius: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.source-box {
+    white-space: pre-wrap;
+    font-family: monospace;
+    line-height: 1.4;
+}
+
+/* This section ensures chat layout is preserved and chart errors don't display */
+.main-content > div:not(.dashboard-container) {
+    display: none !important; /* Hide error messages from Chart.js */
+}
+
+.dashboard-container {
+    z-index: 2; /* Ensure it appears above any error messages */
+}
+
+/* Override any right panel that might push our chat off-center */
+body.charts-hidden .right-panel,
+body.charts-hidden .charts-panel {
+    display: none !important;
+}
+
+/* Make sure the main chat section is properly centered */
+@media (min-width: 1024px) {
+    .dashboard-content {
+        padding: 0 2rem;
+    }
+    
+    .chat-section {
+        max-width: 800px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* END CHART FIXES SECTION */
+
+/* Additional fixes for message display issues */
+
+/* Ensure message containers have proper display */
+.message {
+    position: relative !important;
+    z-index: 5 !important;
+    display: flex !important;
+    margin-bottom: 25px !important;
+    max-width: 90% !important; /* Slightly wider */
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto !important; /* Let content determine width */
+}
+
+/* Force user messages to right, assistant messages to left */
+.message.user {
+    margin-left: auto !important;
+    flex-direction: row-reverse !important;
+}
+
+.message.assistant {
+    margin-right: auto !important;
+}
+
+/* Message avatars - proper positioning and display */
+.message-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 12px !important;
+    background-color: rgba(75, 43, 135, 0.5) !important;
+    border: 1px solid rgba(138, 79, 255, 0.3) !important;
+    font-size: 18px !important;
+    z-index: 2 !important;
+}
+
+/* Message content - ensure proper width and display */
+.message-content {
+    padding: 12px 16px !important;
+    border-radius: 16px !important;
+    position: relative !important;
+    z-index: 5 !important;
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+    max-width: unset !important; /* Remove max-width */
+    width: auto !important;
+    background-color: rgba(45, 22, 87, 0.5) !important;
+    color: #e2d9ff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.message.user .message-content {
+    background-color: rgba(75, 43, 135, 0.5) !important;
+    border-top-right-radius: 4px !important;
+}
+
+.message.assistant .message-content {
+    background-color: rgba(45, 22, 87, 0.5) !important;
+    border-top-left-radius: 4px !important;
+}
+
+/* Chat area fixed width */
+.chat-section {
+    width: 100% !important;
+    max-width: 1000px !important; /* Increased from 800px */
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+}
+
+/* Fix chat messages container */
+.chat-messages {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.5rem !important;
+    padding-bottom: 120px !important; /* Extra padding at bottom to avoid input overlap */
+    width: 100% !important;
+    max-height: unset !important;
+    height: auto !important;
+    min-height: 300px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix chat input positioning */
+.chat-input {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 240px !important; /* Width of sidebar */
+    right: 0 !important;
+    padding: 1rem !important;
+    background-color: rgba(30, 15, 60, 0.95) !important;
+    border-top: 1px solid rgba(138, 79, 255, 0.3) !important;
+    z-index: 100 !important;
+    margin: 0 !important; /* Remove any margin */
+    height: auto !important; /* Let content determine height */
+}
+
+/* Input container styling */
+.input-container {
+    width: 100% !important;
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    background-color: rgba(45, 22, 87, 0.6) !important;
+    border: 1px solid rgba(138, 79, 255, 0.5) !important;
+    border-radius: 16px !important;
+    padding: 10px 16px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Make input box background more visible */
+.input-container input[type="text"] {
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+    outline: none !important;
+}
+
+/* Fix dashboard content padding */
+.dashboard-content {
+    padding: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    overflow-y: hidden !important;
+}
+
+/* Ensure message containers take the available space */
+.message-container {
+    width: 100% !important;
+    display: flex !important;
+    margin-bottom: 10px !important;
+}
+
+/* Hide any additional elements under chat input */
+.file-preview, .active-document-indicator {
+    margin: 10px 0 0 0 !important;
+    padding: 8px !important;
+}
+
+/* Hide any error messages that might appear under messages */
+.error-api {
+    display: none !important;
+}
+
+/* Ensure dashboard takes full height without overflow */
+.dashboard-container {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+}
+
+.dashboard-content {
+    flex: 1 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* Error message styling - hide API errors or style them properly */
+[class*="error"], [class*="Error"], .error-message, .api-error, div:has(> span:contains("Error")), div:has(> span:contains("error")) {
+    display: none !important;
+} 

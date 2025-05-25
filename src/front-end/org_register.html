@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Registration - Farqad</title>
+    <link rel="stylesheet" href="static/css/background.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgb(35, 16, 68) 0%, rgb(23, 11, 44) 100%);
+            color: #ffffff;
+            padding: 1rem;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(41, 19, 87, 0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(228, 100, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-section img {
+            width: 80px;
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #E464FF, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .register-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #E464FF, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .register-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            padding-left: 2.5rem;
+            background: rgba(19, 8, 45, 0.7);
+            border: 1px solid rgba(228, 100, 255, 0.2);
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #E464FF;
+            box-shadow: 0 0 0 2px rgba(228, 100, 255, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 0.75rem;
+            top: 2.3rem;
+            color: rgba(228, 100, 255, 0.7);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 2.3rem;
+            color: rgba(228, 100, 255, 0.7);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #E464FF;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #E464FF, #8B5CF6);
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(228, 100, 255, 0.3);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .submit-button .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-link a {
+            color: #E464FF;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #8B5CF6;
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            color: #51cf66;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 1.5rem;
+            }
+        }
+
+        .register-type-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .register-type-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background: #1a1333;
+            color: #E464FF;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(228, 100, 255, 0.08);
+            position: relative;
+        }
+        .register-type-btn i {
+            font-size: 1.3rem;
+            margin-bottom: 0.25rem;
+        }
+        .register-type-btn.active {
+            background: linear-gradient(135deg, #E464FF 0%, #8B5CF6 100%);
+            color: #fff;
+            border: 2px solid #E464FF;
+            box-shadow: 0 4px 16px rgba(228, 100, 255, 0.18);
+            z-index: 1;
+        }
+        .register-type-btn:not(.active):hover {
+            background: rgba(228, 100, 255, 0.08);
+            color: #fff;
+            border: 2px solid #8B5CF6;
+        }
+    </style>
+</head>
+<body>
+    <div class="space-background">
+        <div class="stars-small"></div>
+        <div class="stars-medium"></div>
+        <div class="stars-large"></div>
+        <div class="nebula"></div>
+        <div class="shooting-stars">
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+        </div>
+    </div>
+    <div class="register-container">
+        <!-- Button Group for Registration Types -->
+        <div class="register-type-group">
+            <a href="register.html" class="register-type-btn"> <i class="fas fa-user"></i> Individual </a>
+            <a href="admin_register.html" class="register-type-btn"> <i class="fas fa-user-shield"></i> Admin </a>
+            <a href="org_register.html" class="register-type-btn active"> <i class="fas fa-building"></i> Organization </a>
+        </div>
+        <div class="logo-section">
+            <a href="main.html" class="logo-link">
+                <img src="static/images/Screenshot_11-Photoroom.png" alt="Farqad Logo">
+                <div class="logo-text">Farqad</div>
+            </a>
+        </div>
+        <div class="register-header">
+            <h1>Organization Registration</h1>
+            <p>Sign up for a new organization account</p>
+        </div>
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        <form id="register-form">
+            <div class="form-group">
+                <label for="org-name">Organization Name</label>
+                <input type="text" id="org-name" name="org-name" required>
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <i class="fas fa-eye password-toggle" id="toggle-password"></i>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <i class="fas fa-eye password-toggle" id="toggle-confirm-password"></i>
+            </div>
+            <button type="submit" class="submit-button">Register Organization</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="org_login.html">Login</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const togglePassword = document.getElementById('toggle-password');
+        const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm-password');
+            const registerForm = document.getElementById('register-form');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Form submission
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Basic validation
+            if (password.value !== confirmPassword.value) {
+                showError('Passwords do not match');
+                return;
+            }
+
+                if (password.value.length < 6) {
+                    showError('Password must be at least 6 characters long');
+                    return;
+                }
+
+            try {
+                    const response = await fetch('http://localhost:5001/api/org/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        org_name: document.getElementById('org-name').value,
+                        email: document.getElementById('email').value,
+                        password: password.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('Registration successful! Redirecting to login...');
+                    setTimeout(() => {
+                        window.location.href = 'org_login.html';
+                    }, 2000);
+                } else {
+                    showError(data.detail || 'Registration failed');
+                }
+            } catch (error) {
+                showError('An error occurred. Please try again.');
+                    console.error('Organization registration error:', error);
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+        });
+    </script>
+</body>
+</html> 

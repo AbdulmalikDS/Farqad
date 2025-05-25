@@ -1,0 +1,68 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Progress: Personal Finance Chatbot
+
+## Completed in this Update (Memory Bank Refinement)
+-   **`project_brief.mdc`**: Enhanced with explicit features and a conceptual Mermaid diagram.
+-   **`product_context.mdc`**: Updated with a detailed user flow (Mermaid) and expanded UX goals.
+-   **`system_patterns.mdc`**: Revised with an added Mermaid diagram for the document analysis pipeline and more descriptive component details.
+-   **`tech_context.mdc`**: Augmented with specific library examples for key features and a tech stack Mermaid diagram.
+-   **`active_context.mdc`**: Updated with more granular next steps laid out in a phased approach (Gantt-style Mermaid diagram).
+-   **`progress.mdc`**: This file, updated to reflect current status and more detailed tasks.
+
+## What Works (Initial State - Pre-Development)
+-   Basic FastAPI backend structure (`src/main.py`) is in place with LLM/VectorDB factory placeholders.
+-   Basic Flask frontend structure (`src/front-end`) exists with HTML pages and some JWT-based authentication logic.
+-   Memory Bank core files have been initialized and subsequently refined (as above).
+
+## What's Left to Build (More Detailed Breakdown)
+
+**Phase 1: Core Setup & Basic Chat (as per `active_context.mdc`)**
+-   [ ] **CORS Implementation**: Re-configure and test CORS in `src/main.py` for Flask frontend access.
+-   [ ] **FastAPI Chat Endpoint**: `/api/chat` for handling user messages (Ar/En), basic LLM interaction.
+-   [ ] **Flask Chat Integration**: Update `chatpage.html` and `app.py` to use the FastAPI chat endpoint.
+-   [ ] **Bilingual Chat Testing**: Ensure basic conversation flow works in both Arabic and English.
+
+**Phase 2: Document Upload & Initial Analysis (as per `active_context.mdc`)**
+-   [ ] **Secure File Upload Endpoint (FastAPI)**: For financial documents (PDFs, images).
+    -   [ ] File type and size validation.
+    -   [ ] Secure storage of uploaded files.
+-   [ ] **Document Processing Module - Stage 1**:
+    -   [ ] OCR Integration (e.g., Tesseract) for image-to-text.
+    -   [ ] PDF Text Extraction (e.g., PyPDF2/pdfplumber).
+    -   [ ] Storage of extracted text in MongoDB, linked to user/document.
+-   [ ] **Simple Q&A on Uploaded Document**: Basic LLM call using extracted text as context.
+
+**Phase 3: Dashboard Foundation (as per `active_context.mdc`)**
+-   [ ] **Dashboard Data APIs (FastAPI)**:
+    -   [ ] Endpoint for basic financial summaries (e.g., list of processed documents, simple expense categories from extracted data - placeholder).
+-   [ ] **Basic Dashboard UI (Flask)**:
+    -   [ ] New HTML page or section in `main.html`.
+    -   [ ] JavaScript to fetch and display data from dashboard APIs.
+    -   [ ] Placeholder visualizations.
+
+**Phase 4 & Beyond: Advanced Features & Refinements**
+-   [ ] **Advanced Financial Advice Engine**: Develop sophisticated logic/prompts for personalized advice.
+-   [ ] **Full RAG Implementation**: Integrate VectorDB for semantic search over processed documents.
+    -   [ ] Embedding generation pipeline for document chunks.
+    -   [ ] Retrieval mechanisms for context injection into LLM prompts.
+-   [ ] **Comprehensive User Authentication & Authorization**: Review and harden current JWT setup, ensure proper scope and access controls across FastAPI and Flask if necessary.
+-   [ ] **Bilingual Support Enhancements**: Address complexities like RTL text rendering, mixed-language input, cultural nuances in financial advice.
+-   [ ] **Dashboard Enhancements**: Interactive charts, customizable views, trend analysis.
+-   [ ] **Error Handling & Logging**: Implement robust and centralized logging and user-friendly error reporting.
+-   [ ] **Testing Suite**: Develop unit, integration, and end-to-end tests for all critical paths.
+-   [ ] **Deployment Setup**: Dockerization, CI/CD pipeline, cloud deployment configuration.
+-   [ ] **Scalability & Performance Optimization**: Load testing and optimization of bottlenecks.
+
+## Current Status
+-   **Phase**: Memory Bank Refinement complete. Preparing for Phase 1 Development (Core Setup & Basic Chat).
+-   **Key Milestone**: Memory Bank significantly enhanced with explicit details and diagrams.
+
+## Known Issues & Blockers
+-   **CORS Configuration**: Needs immediate attention to enable frontend-backend communication (`src/main.py`).
+-   **LLM & VectorDB Selection**: Specific provider choices for LLMs (generation, embedding) and VectorDB need to be finalized for deeper integration and cost assessment.
+-   **Frontend Long-term Strategy**: Decision on whether to stick with Flask for the frontend or migrate to a modern JS framework will impact dashboard development significantly.
+

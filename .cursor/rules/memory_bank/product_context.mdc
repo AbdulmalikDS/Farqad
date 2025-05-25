@@ -1,0 +1,54 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Product Context: Personal Finance Chatbot
+
+## Why This Project Exists
+Many individuals find managing personal finances to be a complex, time-consuming, and often overwhelming task. This chatbot aims to simplify personal finance by providing an accessible, intelligent, and friendly assistant that speaks the user's language.
+
+## Problems It Solves
+-   **Financial Literacy Gap**: Bridges the knowledge gap by explaining financial concepts simply and offering actionable insights, regardless of the user's current financial expertise.
+-   **Language Barrier in Financial Tools**: Offers full support in both Arabic and English, making sophisticated financial advice and tools accessible to a broader, multilingual audience.
+-   **Time Constraints & Inconvenience**: Provides quick answers, instant document analysis, and readily available budget summaries, saving users significant time compared to manual tracking or scheduling appointments with human advisors for common queries.
+-   **Information Overload & Jargon**: Delivers concise, relevant insights and advice, cutting through complex financial jargon and presenting information in an easy-to-digest format.
+-   **Lack of Personalized Guidance**: Moves beyond generic advice by tailoring suggestions to the user's specific financial situation, uploaded documents, and stated goals.
+
+## How It Should Work
+Users interact with the chatbot primarily through a conversational interface. They can type questions, make statements, or upload financial documents. The AI backend processes these inputs, leveraging NLP for understanding and various AI models for analysis and response generation. A connected dashboard provides a visual summary of their financial status, updated based on interactions and analyzed data.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant ChatInterface as Chat Interface (Frontend)
+    participant BackendAPI as FastAPI Backend
+    participant AIService as AI/LLM Service
+    participant FinDB as Financial Data DB (MongoDB)
+    participant DocAnalysis as Document Analysis Module
+    participant Dashboard
+
+    User->>ChatInterface: Types question / Uploads document
+    ChatInterface->>BackendAPI: Sends message / document data
+    BackendAPI->>AIService: Forwards message for NLU / initial processing
+    alt Document Uploaded
+        BackendAPI->>DocAnalysis: Initiates document processing (OCR, data extraction)
+        DocAnalysis-->>BackendAPI: Returns structured data
+        BackendAPI->>AIService: Sends structured data for analysis/insight generation
+        BackendAPI->>FinDB: Stores extracted data / document reference
+    end
+    AIService-->>BackendAPI: Returns processed response / insights
+    BackendAPI->>FinDB: Logs conversation / stores relevant data
+    BackendAPI-->>ChatInterface: Sends formatted response / dashboard update trigger
+    ChatInterface-->>User: Displays chatbot response
+    User->>Dashboard: Views updated financial insights
+```
+
+## User Experience Goals
+-   **Simple and Intuitive**: The interface across chat and dashboard must be exceptionally easy to navigate, with clear calls to action and a minimal learning curve.
+-   **Friendly, Supportive, and Empathetic**: The chatbot's persona should be consistently encouraging, patient, and helpful, fostering a positive user relationship.
+-   **Trustworthy and Secure**: Users must have absolute confidence that their sensitive financial data is handled with the highest security standards (encryption, access controls) and that the advice provided is reliable and unbiased.
+-   **Empowering and Action-Oriented**: The chatbot should not just provide information but empower users to take concrete positive actions towards their financial goals. Advice should be practical and actionable.
+-   **Responsive and Efficient**: Interactions, including document analysis and dashboard loading, should be quick and efficient to maintain user engagement.
+-   **Culturally Aware**: Especially with bilingual support, ensure cultural nuances related to financial discussions are handled sensitively if they arise.
+

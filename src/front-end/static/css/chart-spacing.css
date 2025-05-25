@@ -1,0 +1,89 @@
+/* 
+ * Chart Spacing CSS
+ * This file adjusts spacing between chart boxes to improve the dashboard layout
+ */
+
+/* Increase spacing between chart containers */
+.chart-container-wrapper {
+  margin-bottom: 50px !important; /* Increased significantly */
+  padding: 25px !important; /* Increased padding */
+  border-radius: 20px !important; /* Larger border radius */
+}
+
+/* Add more space in the panel content that holds charts */
+.panel-content {
+  gap: 40px !important; /* Increased gap */
+  padding: 30px !important; /* Increased padding */
+}
+
+/* Increase gap between charts in a row */
+.charts-row {
+  gap: 40px !important; /* Increased gap */
+}
+
+/* Add more spacing to secondary charts container */
+.secondary-charts-container {
+  gap: 40px !important; /* Increased gap */
+  margin-top: 40px !important; /* Add top margin */
+}
+
+/* Add more margin to chart containers */
+.chart-container {
+  margin: 20px 0 !important; /* Increased margin */
+  min-height: 200px !important; /* Ensure sufficient height */
+}
+
+/* Add more margin between primary chart and elements below it */
+.primary-chart .chart-container {
+  margin-bottom: 40px !important; /* Increased margin */
+}
+
+/* Add more spacing to the financial summary section */
+.financial-summary {
+  margin-top: 50px !important; /* Increased margin */
+  padding: 25px !important; /* Add padding */
+}
+
+/* Create more space for the table */
+.financial-table-wrapper {
+  margin-top: 50px !important;
+  padding: 25px !important;
+}
+
+/* Increase width of the charts panel for more breathing room */
+.charts-panel {
+  width: 500px !important; /* Wider panel */
+  max-width: 90vw !important; /* But still responsive */
+}
+
+/* Create vertical space between financial overview title and content */
+.financial-dashboard h3,
+.panel-title h3,
+.panel-header {
+  margin-bottom: 30px !important;
+}
+
+/* Space out elements in financial overview */
+.financial-overview > div {
+  margin-bottom: 40px !important;
+}
+
+/* Add spacing between individual charts */
+.chart-box {
+  margin-bottom: 40px !important;
+}
+
+/* Create space between pie chart and its legend */
+.chart-legend {
+  margin-top: 25px !important;
+}
+
+/* Ensure content doesn't feel cramped */
+.panel-content > div {
+  margin-bottom: 40px !important;
+}
+
+/* Apply additional spacing to the main financial dashboard container */
+#financial-dashboard-container {
+  padding: 30px !important;
+} 

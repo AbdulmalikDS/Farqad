@@ -1,0 +1,75 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Active Context: Personal Finance Chatbot
+
+## Current Work Focus
+-   Refining and detailing the Memory Bank to provide a comprehensive foundation for development.
+-   Planning the immediate next steps for core feature implementation and frontend-backend integration.
+
+## Recent Changes
+-   Enhanced `project_brief.mdc` with explicit features and a conceptual Mermaid diagram.
+-   Updated `product_context.mdc` with a detailed user flow (Mermaid) and expanded UX goals.
+-   Revised `system_patterns.mdc` with a new Mermaid diagram for the document analysis pipeline.
+-   Augmented `tech_context.mdc` with specific library examples and a tech stack Mermaid diagram.
+-   Currently updating `active_context.mdc` and `progress.mdc`.
+
+
+## Next Steps (Phased Approach)
+
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title       Development Phases - Next Steps
+    excludes    weekends
+
+    section Phase 1: Core Setup & Basic Chat
+    Re-implement CORS & Test       :milestone, m1, 2023-10-26, 1d
+    Basic Chat API (FastAPI)     :a1, after m1, 3d
+    Integrate Basic Chat (Flask) :a2, after a1, 3d
+    Bilingual Test (Ar/En)       :a3, after a2, 2d
+
+    section Phase 2: Document Upload & Initial Analysis
+    Secure File Upload Endpoint  :b1, after a3, 3d
+    Basic OCR/Text Extraction    :b2, after b1, 4d
+    Store Extracted Text (MongoDB) :b3, after b2, 2d
+    Simple Q&A on Uploaded Doc   :b4, after b3, 4d 
+
+    section Phase 3: Dashboard Foundation
+    Define Dashboard APIs (FastAPI) :c1, after b4, 3d
+    Basic Dashboard UI (Flask)   :c2, after c1, 4d
+    Display Sample Insights      :c3, after c2, 2d
+
+    section Phase 4: Enhancements & Refinements
+    Advanced Financial Advice Logic:d1, after c3, 5d
+    Full RAG for Doc Q&A         :d2, after d1, 5d
+    User Authentication Review   :d3, after d2, 3d
+    Comprehensive Testing        :d4, after d3, 5d
+```
+
+1.  **Phase 1: Core Setup & Basic Chat**
+    *   **CORS & Connectivity**: Re-implement CORS in `src/main.py` for Flask frontend. Test basic API call from frontend to backend.
+    *   **Basic Chat Endpoint (FastAPI)**: Develop a robust `/api/chat` endpoint in FastAPI that takes a user message (and language preference), interfaces with the `LLMProviderFactory` for a basic response, and returns it.
+    *   **Frontend Chat Integration (Flask)**: Update `src/front-end/chatpage.html` and `app.py` to properly call the FastAPI chat endpoint and display user/AI messages.
+    *   **Bilingual Test**: Thoroughly test basic chat in both Arabic and English.
+2.  **Phase 2: Document Upload & Initial Analysis**
+    *   **Secure File Upload**: Create a secure endpoint in FastAPI for financial document uploads. Implement validation (file types, size).
+    *   **OCR & Text Extraction**: Integrate basic OCR (e.g., Tesseract) for image-based documents and text extraction for PDFs. Store extracted text linked to user/document.
+    *   **Simple Q&A on Document**: Allow users to ask very simple questions based on the extracted text of an uploaded document (without full RAG yet).
+3.  **Phase 3: Dashboard Foundation**
+    *   **Dashboard APIs (FastAPI)**: Define and implement initial API endpoints to serve data for the budget insights dashboard (e.g., summary of uploaded document contents, placeholder spending data).
+    *   **Basic Dashboard UI (Flask)**: Create a basic structure for `main.html` (or a dedicated dashboard page) to display the data fetched from the new APIs.
+
+## Active Decisions and Considerations
+-   **Frontend Technology Stack**: The current Flask frontend is suitable for initial development. However, for a richer, more interactive dashboard and potentially more complex chat features, a migration to a JavaScript framework (e.g., React, Vue.js, or Svelte) should be evaluated after Phase 2 or 3. This will impact how dashboard components are built.
+-   **Authentication & Authorization**: The existing JWT setup in Flask frontend (`src/front-end/app.py`) needs to be reviewed. Ensure tokens are securely handled and validated by the FastAPI backend if frontend calls backend APIs directly. Consider a unified auth strategy.
+-   **LLM/VectorDB Choices**: While factories are in place, concrete decisions on which specific LLM for generation/embedding and which Vector DB will be used need to be made, along with associated costs and performance testing.
+-   **Error Handling & Logging**: Implement consistent error handling and logging across both frontend and backend from the start of each feature development.
+-   **Testing Strategy**: Define and start implementing unit and integration tests for new backend endpoints and frontend interactions early.
+
+
+
+
+

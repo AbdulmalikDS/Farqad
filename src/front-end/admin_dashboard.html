@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Farqad</title>
+    <link rel="stylesheet" href="static/css/background.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            color: #ffffff;
+            background: linear-gradient(135deg, rgb(35, 16, 68) 0%, rgb(23, 11, 44) 100%);
+        }
+
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            background: rgba(25, 9, 48, 0.95);
+            width: 260px;
+            height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: #A855F7;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(147, 51, 234, 0.1);
+            color: #A855F7;
+        }
+
+        .menu-item.active {
+            background: rgba(147, 51, 234, 0.2);
+            color: #A855F7;
+            border-left: 3px solid #A855F7;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .page-header h2 {
+            font-size: 1.5rem;
+            color: #A855F7;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #E11D48;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .admin-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-name {
+            font-weight: bold;
+            color: #A855F7;
+        }
+
+        .admin-role {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dashboard stats section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(41, 19, 87, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(147, 51, 234, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #A855F7;
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .stat-change.positive {
+            color: #10B981;
+        }
+
+        .stat-change.negative {
+            color: #EF4444;
+        }
+
+        /* Charts section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card, .users-table-card {
+            background: rgba(41, 19, 87, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .chart-header, .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .chart-title, .table-title {
+            font-size: 1.1rem;
+            color: #A855F7;
+        }
+
+        .chart-actions select {
+            background: rgba(25, 9, 48, 0.8);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chart-container {
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Users table */
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .users-table th {
+            text-align: left;
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+            color: #A855F7;
+            font-weight: 500;
+        }
+
+        .users-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+        }
+
+        .users-table tr:hover td {
+            background: rgba(147, 51, 234, 0.05);
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .user-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .user-status.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        /* Recent activities section */
+        .recent-activities {
+            background: rgba(41, 19, 87, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .activities-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .activities-title {
+            font-size: 1.1rem;
+            color: #A855F7;
+        }
+
+        .activities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(147, 51, 234, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #A855F7;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-text {
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .activity-user {
+            color: #A855F7;
+            font-weight: 500;
+        }
+
+        /* Logout button at the bottom of sidebar */
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: rgba(147, 51, 234, 0.1);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding-bottom: 1rem;
+            }
+
+            .stat-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Table styles */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 1rem;
+            background: rgba(41, 19, 87, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: rgba(25, 9, 48, 0.8);
+            color: #A855F7;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(147, 51, 234, 0.05);
+        }
+
+        .data-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #A855F7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-avatar.org {
+            background: #3B82F6;
+        }
+
+        .user-avatar.admin {
+            background: #F59E0B;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge.individual {
+            background: rgba(168, 85, 247, 0.15);
+            color: #D8B4FE;
+        }
+
+        .badge.organization {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93C5FD;
+        }
+
+        .badge.admin {
+            background: rgba(245, 158, 11, 0.15);
+            color: #FCD34D;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6EE7B7;
+        }
+
+        .status-badge.inactive, .status-badge.closed {
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            background: rgba(147, 51, 234, 0.1);
+            color: #A855F7;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(147, 51, 234, 0.2);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 6px;
+            color: #A855F7;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            background: rgba(147, 51, 234, 0.3);
+        }
+
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .document-icon {
+            font-size: 1.25rem;
+        }
+
+        .document-icon.pdf {
+            color: #F87171;
+        }
+
+        .document-icon.excel {
+            color: #4ADE80;
+        }
+
+        .document-icon.word {
+            color: #60A5FA;
+        }
+
+        .document-icon.image {
+            color: #F472B6;
+        }
+
+        /* Content sections display control */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Dashboard section is active by default */
+        #dashboard-section {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="static/images/Screenshot_11-Photoroom.png" alt="Farqad Logo">
+                <h1>Admin Dashboard</h1>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    Users
+                </a>
+                <a href="#" class="menu-item" data-section="conversations">
+                    <i class="fas fa-comments"></i>
+                    Conversations
+                </a>
+                <a href="#" class="menu-item" data-section="documents">
+                    <i class="fas fa-file-alt"></i>
+                    Documents
+                </a>
+                <a href="login.html" class="menu-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>Dashboard Overview</h2>
+                <div class="admin-info">
+                    <div class="admin-avatar" id="admin-avatar">A</div>
+                    <div class="admin-details">
+                        <div class="admin-name" id="admin-name">Admin</div>
+                        <div class="admin-role">Administrator</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Users</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="total-users">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12% from last month</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Chats Today</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="chats-today">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8% from yesterday</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Documents Processed</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="docs-processed">0</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>15% from last week</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Average Response Time</div>
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="avg-response-time">0s</div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>3% from last week</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts section -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">User Activity</div>
+                        <div class="chart-actions">
+                            <select id="chart-timeframe">
+                                <option value="day">Last 24 Hours</option>
+                                <option value="week" selected>Last 7 Days</option>
+                                <option value="month">Last 30 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="userActivityChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="users-table-card">
+                    <div class="table-header">
+                        <div class="table-title">Active Users</div>
+                    </div>
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="active-users-tbody">
+                            <!-- Will be filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Recent activities -->
+            <div class="recent-activities">
+                <div class="activities-header">
+                    <div class="activities-title">Recent Activities</div>
+                </div>
+                <div class="activities-list" id="activities-list">
+                    <!-- Will be filled by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Users Table Section -->
+            <section class="content-section" id="users-section">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <div class="section-actions">
+                        <button class="action-button">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">A</div>
+                                        <div class="user-name">Abdulmalik alquwayfili</div>
+                                    </div>
+                                </td>
+                                <td>john@example.com</td>
+                                <td><span class="badge individual">Individual</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-edit"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar org">Z</div>
+                                        <div class="user-name">Ziyad Aljenaidel</div>
+                                    </div>
+                                </td>
+                                <td>info@acmecorp.com</td>
+                                <td><span class="badge organization">Organization</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-edit"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">B</div>
+                                        <div class="user-name">Badrudin Khan</div>
+                                    </div>
+                                </td>
+                                <td>sarah@example.com</td>
+                                <td><span class="badge individual">Individual</span></td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-edit"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar org">W</div>
+                                        <div class="user-name">Wakeb Data</div>
+                                    </div>
+                                </td>
+                                <td>contact@techsolutions.com</td>
+                                <td><span class="badge organization">Organization</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-edit"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar admin">Y</div>
+                                        <div class="user-name">Yosef Ahmed</div>
+                                    </div>
+                                </td>
+                                <td>mike@admin.com</td>
+                                <td><span class="badge admin">Admin</span></td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-edit"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Conversations Section -->
+            <section class="content-section" id="conversations-section">
+                <div class="section-header">
+                    <h2>Recent Conversations</h2>
+                    <div class="section-actions">
+                        <button class="action-button">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Conversation Title</th>
+                                <th>Messages</th>
+                                <th>Last Activity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">J</div>
+                                        <div class="user-name">John Doe</div>
+                                    </div>
+                                </td>
+                                <td>Budget Planning Assistance</td>
+                                <td>12</td>
+                                <td>2 hours ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">S</div>
+                                        <div class="user-name">Sarah Wilson</div>
+                                    </div>
+                                </td>
+                                <td>Investment Strategy Review</td>
+                                <td>8</td>
+                                <td>Yesterday</td>
+                                <td><span class="status-badge closed">Closed</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar org">A</div>
+                                        <div class="user-name">Acme Corp</div>
+                                    </div>
+                                </td>
+                                <td>Financial Report Analysis</td>
+                                <td>24</td>
+                                <td>2 days ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar org">T</div>
+                                        <div class="user-name">Tech Solutions</div>
+                                    </div>
+                                </td>
+                                <td>Annual Financial Planning</td>
+                                <td>17</td>
+                                <td>3 days ago</td>
+                                <td><span class="status-badge closed">Closed</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Documents Section -->
+            <section class="content-section" id="documents-section">
+                <div class="section-header">
+                    <h2>Uploaded Documents</h2>
+                    <div class="section-actions">
+                        <button class="action-button">
+                            <i class="fas fa-upload"></i> Upload Document
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Document Name</th>
+                                <th>Uploaded By</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Upload Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="document-info">
+                                        <i class="fas fa-file-pdf document-icon pdf"></i>
+                                        <span>Q4_Financial_Report.pdf</span>
+                                    </div>
+                                </td>
+                                <td>John Doe</td>
+                                <td>PDF</td>
+                                <td>2.4 MB</td>
+                                <td>Apr 15, 2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-download"></i></button>
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="document-info">
+                                        <i class="fas fa-file-excel document-icon excel"></i>
+                                        <span>Budget_2023.xlsx</span>
+                                    </div>
+                                </td>
+                                <td>Sarah Wilson</td>
+                                <td>Excel</td>
+                                <td>1.2 MB</td>
+                                <td>Apr 12, 2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-download"></i></button>
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="document-info">
+                                        <i class="fas fa-file-word document-icon word"></i>
+                                        <span>Investment_Strategy.docx</span>
+                                    </div>
+                                </td>
+                                <td>Acme Corp</td>
+                                <td>Word</td>
+                                <td>845 KB</td>
+                                <td>Apr 10, 2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-download"></i></button>
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="document-info">
+                                        <i class="fas fa-file-image document-icon image"></i>
+                                        <span>Receipt_March2023.jpg</span>
+                                    </div>
+                                </td>
+                                <td>Tech Solutions</td>
+                                <td>Image</td>
+                                <td>512 KB</td>
+                                <td>Apr 5, 2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-download"></i></button>
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="document-info">
+                                        <i class="fas fa-file-pdf document-icon pdf"></i>
+                                        <span>Annual_Report_2022.pdf</span>
+                                    </div>
+                                </td>
+                                <td>Mike Johnson</td>
+                                <td>PDF</td>
+                                <td>4.8 MB</td>
+                                <td>Apr 1, 2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="icon-button"><i class="fas fa-download"></i></button>
+                                        <button class="icon-button"><i class="fas fa-eye"></i></button>
+                                        <button class="icon-button"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Check if admin is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminToken = localStorage.getItem('admin_token');
+            const adminName = localStorage.getItem('adminname');
+            
+            if (!adminToken || !adminName) {
+                // Not logged in as admin, redirect to login
+                window.location.href = 'admin_login.html';
+                return;
+            }
+            
+            // Update admin name and avatar
+            const adminNameEl = document.getElementById('admin-name');
+            const adminAvatarEl = document.getElementById('admin-avatar');
+            
+            if (adminNameEl) adminNameEl.textContent = adminName;
+            if (adminAvatarEl) adminAvatarEl.textContent = adminName.charAt(0).toUpperCase();
+            
+            // Setup logout button
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('admin_token');
+                    localStorage.removeItem('adminname');
+                    window.location.href = 'admin_login.html';
+                });
+            }
+            
+            // Load dashboard data
+            loadDashboardData();
+        });
+        
+        function loadDashboardData() {
+            // Fetch data from the API
+            fetch('http://localhost:5001/api/admin/stats', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // In a production app, you would include authentication
+                    // 'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update stats
+                document.getElementById('total-users').textContent = data.total_accounts || '0';
+                document.getElementById('chats-today').textContent = data.chats_today || '0';
+                document.getElementById('docs-processed').textContent = data.documents_processed || '0';
+                document.getElementById('avg-response-time').textContent = `${data.avg_response_time || '0'}s`;
+                
+                // Populate active users table
+                const tbody = document.getElementById('active-users-tbody');
+                if (tbody && data.active_users) {
+                    tbody.innerHTML = '';
+                    data.active_users.forEach(user => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${user.name}</td>
+                            <td>${user.type}</td>
+                            <td><span class="user-status ${user.status}">${user.status}</span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+                
+                // Populate activities list
+                const activitiesList = document.getElementById('activities-list');
+                if (activitiesList && data.recent_activities) {
+                    activitiesList.innerHTML = '';
+                    data.recent_activities.forEach(activity => {
+                        const activityItem = document.createElement('div');
+                        activityItem.className = 'activity-item';
+                        
+                        let activityText = '';
+                        let icon = '';
+                        
+                        switch (activity.type) {
+                            case 'login':
+                                activityText = `<span class="activity-user">${activity.user}</span> logged in`;
+                                icon = 'fa-sign-in-alt';
+                                break;
+                            case 'document':
+                                activityText = `<span class="activity-user">${activity.user}</span> uploaded a document`;
+                                icon = 'fa-file-upload';
+                                break;
+                            case 'chat':
+                                activityText = `<span class="activity-user">${activity.user}</span> started a new chat`;
+                                icon = 'fa-comment';
+                                break;
+                            case 'signup':
+                                activityText = `<span class="activity-user">${activity.user}</span> signed up`;
+                                icon = 'fa-user-plus';
+                                break;
+                            default:
+                                activityText = `<span class="activity-user">${activity.user}</span> performed an action`;
+                                icon = 'fa-circle';
+                        }
+                        
+                        activityItem.innerHTML = `
+                            <div class="activity-icon">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-text">${activityText}</div>
+                                <div class="activity-time">${activity.time}</div>
+                            </div>
+                        `;
+                        activitiesList.appendChild(activityItem);
+                    });
+                }
+                
+                // Initialize charts with real data
+                if (data.daily_stats) {
+                    initializeCharts(data.daily_stats);
+                } else {
+                    initializeCharts(null); // Use default data
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching dashboard data:', error);
+                alert('Failed to load dashboard data. Using sample data instead.');
+                
+                // Fall back to sample data
+                document.getElementById('total-users').textContent = '248';
+                document.getElementById('chats-today').textContent = '35';
+                document.getElementById('docs-processed').textContent = '127';
+                document.getElementById('avg-response-time').textContent = '1.2s';
+                
+                // Initialize charts with default data
+                initializeCharts(null);
+                
+                // Populate with default data...
+                // (rest of the default data population code)
+            });
+        }
+        
+        function initializeCharts(dailyStats) {
+            // User activity chart
+            const ctx = document.getElementById('userActivityChart').getContext('2d');
+            
+            let dates = [];
+            let chats = [];
+            let newUsers = [];
+            let documents = [];
+            
+            if (dailyStats) {
+                // Use real data
+                dailyStats.reverse().forEach(day => {
+                    const date = new Date(day.date);
+                    dates.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+                    chats.push(day.chats);
+                    newUsers.push(day.new_users);
+                    documents.push(day.documents);
+                });
+            } else {
+                // Sample data for the past week
+                const now = new Date();
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    dates.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+                }
+                
+                chats = [12, 19, 15, 22, 18, 24, 18];
+                newUsers = [5, 7, 3, 4, 8, 6, 5];
+                documents = [8, 12, 10, 15, 13, 10, 9];
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Chats',
+                            data: chats,
+                            borderColor: '#A855F7',
+                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'New Users',
+                            data: newUsers,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Documents',
+                            data: documents,
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Add event listener for chart timeframe selector
+            const timeframeSelector = document.getElementById('chart-timeframe');
+            if (timeframeSelector) {
+                timeframeSelector.addEventListener('change', function() {
+                    // In a real app, this would fetch new data based on the selected timeframe
+                    alert('In a production app, this would refresh the chart with data for the selected timeframe: ' + this.value);
+                });
+            }
+        }
+
+        // JavaScript for dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu section toggle functionality
+            const menuItems = document.querySelectorAll('.menu-item[data-section]');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get section id to show
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // Remove active class from all menu items and add to clicked
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Hide all sections and show the selected one
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === sectionId + '-section') {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Initialize admin info 
+            const adminAvatar = document.querySelector('.admin-avatar');
+            const adminName = document.querySelector('.admin-name');
+            
+            if (adminAvatar && adminName) {
+                // Get admin name from localStorage if available
+                const storedAdminname = localStorage.getItem('adminname');
+                
+                if (storedAdminname) {
+                    adminName.textContent = storedAdminname;
+                    adminAvatar.textContent = storedAdminname.charAt(0).toUpperCase();
+                }
+            }
+            
+            // Action buttons functionality
+            const actionButtons = document.querySelectorAll('.action-button, .icon-button');
+            
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // This would be where you'd implement actual functionality
+                    // For demo, just show an alert
+                    alert('Action functionality would be implemented here.');
+                });
+            });
+            
+            // Charts initialization - example
+            const userActivityChart = document.getElementById('userActivityChart');
+            
+            if (userActivityChart && window.Chart) {
+                new Chart(userActivityChart, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [
+                            {
+                                label: 'New Users',
+                                data: [5, 8, 12, 8, 10, 6, 9],
+                                borderColor: '#A855F7',
+                                backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Active Users',
+                                data: [15, 22, 28, 25, 30, 24, 29],
+                                borderColor: '#3B82F6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(147, 51, 234, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(147, 51, 234, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

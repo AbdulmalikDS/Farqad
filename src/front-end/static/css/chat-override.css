@@ -1,0 +1,982 @@
+/* === Chat Override CSS - Focused for Clean UI === */
+
+/* --- Base Layout --- */
+body, html {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    height: 100vh;
+    background: #1e1240;
+    color: #e0e0e0;
+    padding: 15px;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #180f33; /* Fallback background for the main area */
+    position: relative; /* For positioning the charts panel */
+}
+
+.dashboard-header {
+    height: 55px;
+    padding: 0 25px;
+    background: rgba(30, 18, 64, 0.85);
+    display: flex;
+    align-items: center;
+    color: #f0f0f0;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(138, 79, 255, 0.15);
+    position: relative; /* Ensure header is above chat if chat uses absolute/fixed */
+    z-index: 50; /* Above chat but below sidebar popups if any */
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    display: flex; /* Will just contain chat-section now */
+    overflow: hidden;
+    box-sizing: border-box;
+    /* No padding, chat-section will fill this */
+}
+
+/* --- Chat Section (Full Width Panel) --- */
+.chat-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: rgba(28, 15, 58, 0.85); /* Slightly different background for chat */
+    overflow: hidden; /* Children scroll, not this */
+    /* border-left: 1px solid rgba(138, 79, 255, 0.1); Optional: if main-content bg is different */
+}
+
+/* --- Chat Messages Area --- */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 79, 255, 0.4) rgba(30, 18, 64, 0.3);
+    background: transparent; 
+    opacity: 1;
+}
+
+/* --- Message Styling (Cleaned up, no !important) --- */
+.message {
+    display: flex;
+    max-width: 75%;
+    align-items: flex-end;
+    margin-bottom: 0; /* Gap is handled by .chat-messages parent */
+    opacity: 1;
+    background: none;
+    border: none;
+    padding: 0;
+    animation: none;
+}
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+.message.assistant {
+    align-self: flex-start;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #4b3182;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+    margin: 0 10px;
+    flex-shrink: 0;
+    opacity: 1;
+    transform: none;
+    animation: none;
+}
+.message.user .message-avatar {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 12px;
+    color: #f0f0f0;
+    line-height: 1.5;
+    word-break: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    opacity: 1;
+    background: #3a2569; 
+    transform: none;
+    animation: none;
+    width: auto;
+    height: auto;
+    min-width: 50px;
+}
+.message.user .message-content {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+.message.assistant .message-content {
+    background: #3a2569;
+    border-bottom-left-radius: 4px;
+}
+
+/* --- Document-related panels (Kept simple) --- */
+.document-list-panel, .file-preview, .active-document-indicator {
+    padding: 10px 25px;
+    background: rgba(30, 18, 64, 0.85);
+    border-top: 1px solid rgba(138, 79, 255, 0.1);
+    border-bottom: 1px solid rgba(138, 79, 255, 0.1); /* Add bottom border too */
+    color: #d0d0d0;
+    font-size: 0.85em;
+    flex-shrink: 0;
+    margin: 5px 0; /* Spacing if multiple are shown */
+}
+.file-preview, .active-document-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* --- Chat Input Area --- */
+.chat-input { 
+    padding: 12px 25px;
+    background: rgba(24, 10, 52, 0.9);
+    border-top: 1px solid rgba(138, 79, 255, 0.25);
+    flex-shrink: 0; 
+    box-sizing: border-box;
+}
+.input-container { 
+    display: flex;
+    align-items: center;
+    background: rgba(45, 25, 90, 0.7);
+    border-radius: 22px; 
+    padding: 6px 8px 6px 15px; 
+    border: 1px solid rgba(138, 79, 255, 0.35);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-container:focus-within {
+    border-color: rgba(138, 79, 255, 0.7);
+    box-shadow: 0 0 0 2px rgba(138, 79, 255, 0.2);
+}
+.input-container .upload-button {
+    background: transparent;
+    border: none;
+    color: rgba(190, 160, 255, 0.8);
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 5px;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input-container .upload-button:hover {
+    color: #cbaeff;
+}
+.input-container input[type="text"] {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e8e8e8;
+    font-size: 0.95em;
+    padding: 8px 0;
+}
+.input-container input[type="text"]::placeholder {
+    color: rgba(200, 180, 255, 0.5);
+}
+.input-container .send-btn {
+    background: linear-gradient(135deg, #7b2ff7 0%, #c048f9 100%);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.input-container .send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 10px rgba(123, 47, 247, 0.4);
+}
+.input-container .send-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    align-self: center;
+    margin: 15px 0;
+    opacity: 1;
+}
+
+/* --- Basic Right Charts Panel Positioning --- */
+.right-panel.charts-panel {
+    position: absolute; /* Positioned relative to main-content */
+    top: 0; /* Align with top of main-content (below dashboard-header) */
+    right: 0;
+    width: 350px; /* Default width, can be adjusted */
+    height: calc(100% - 55px); /* Full height minus dashboard-header */
+    background: rgba(23, 27, 46, 0.9); /* From standard-ui */
+    z-index: 60; /* Above chat section but below sidebar popups */
+    border-left: 1px solid rgba(138, 79, 255, 0.15);
+    display: flex; /* Default to flex, JS might change to none */
+    flex-direction: column;
+    overflow-y: auto; /* If content overflows */
+    /* Add transition for smooth show/hide if JS animates it */
+    /* transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; */
+    /* transform: translateX(100%); */ /* Initially off-screen if hidden by JS */
+    /* opacity: 0; */
+}
+.right-panel.charts-panel.show {
+    /* transform: translateX(0); */
+    /* opacity: 1; */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+        border-right: none;
+    }
+    .dashboard-content {
+        padding: 0;
+    }
+    .chat-section {
+        /* No changes needed, it already fills dashboard-content */
+    }
+    .chat-messages {
+        padding: 15px;
+        gap: 12px;
+    }
+    .chat-input {
+        padding: 10px 15px;
+    }
+    .input-container {
+        padding: 4px 6px 4px 12px;
+    }
+    .message {
+        max-width: 85%;
+    }
+    .right-panel.charts-panel {
+        width: 100%; /* Full width on mobile if shown */
+        height: 50vh; /* Or some other appropriate mobile height */
+        bottom: 0;
+        top: auto; /* Override absolute top positioning */
+        border-left: none;
+        border-top: 1px solid rgba(138, 79, 255, 0.15);
+    }
+}
+
+/* RTL support */
+[lang="ar"] .message.user { align-self: flex-start; flex-direction: row; }
+[lang="ar"] .message.assistant { align-self: flex-end; flex-direction: row-reverse; }
+[lang="ar"] .message.user .message-content { border-bottom-right-radius: 12px; border-bottom-left-radius: 4px; }
+[lang="ar"] .message.assistant .message-content { border-bottom-left-radius: 12px; border-bottom-right-radius: 4px; }
+
+/* 
+ * Simple Chat Interface Override
+ * Clean styling for the chat functionality
+ */
+
+/* Ensure main content takes full height */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Dashboard container should flex grow */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Chat area properly fills available space */
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Message containers */
+.message {
+  max-width: 80%;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  z-index: 10;
+  clear: both;
+}
+
+/* User message */
+.message.user {
+  margin-left: auto;
+  margin-right: 20px;
+  flex-direction: row-reverse;
+}
+
+/* Assistant message */
+.message.assistant {
+  margin-right: auto;
+  margin-left: 20px;
+}
+
+/* Message content styling */
+.message-content {
+  border-radius: 18px;
+  padding: 12px 16px;
+  max-width: calc(100% - 50px);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+  font-size: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* User message appearance */
+.message.user .message-content {
+  background: rgba(98, 0, 238, 0.8);
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+/* Assistant message appearance */
+.message.assistant .message-content {
+  background: rgba(60, 35, 105, 0.8);
+  color: white;
+  border-top-left-radius: 4px;
+}
+
+/* System message */
+.message.system {
+  width: 90%;
+  margin: 20px auto;
+  background: rgba(30, 15, 60, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(138, 79, 255, 0.4);
+  padding: 2px;
+}
+
+.message.system .message-content {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+/* Avatar styling */
+.message-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 8px;
+  color: white;
+  font-weight: 500;
+}
+
+.message.user .message-avatar {
+  background: rgba(98, 0, 238, 0.8);
+}
+
+.message.assistant .message-avatar {
+  background: rgba(60, 35, 105, 0.8);
+}
+
+/* Chat container - fixed positioning issues */
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: 120px !important; /* Extra space for input */
+  margin-bottom: 70px !important; /* Space for input container */
+}
+
+/* Chat input area - ensuring fixed bottom positioning */
+.chat-input-container, 
+.input-container,
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(30, 15, 60, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-top: 1px solid rgba(138, 79, 255, 0.4);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.chat-input {
+  width: 90%;
+  max-width: 800px;
+  padding: 12px 16px;
+  border-radius: 24px;
+  background: rgba(45, 25, 90, 0.8);
+  color: white;
+  border: 1px solid rgba(138, 79, 255, 0.5);
+  outline: none;
+  font-size: 15px;
+}
+
+.chat-input:focus {
+  border-color: rgba(138, 79, 255, 0.8);
+  box-shadow: 0 0 0 2px rgba(138, 79, 255, 0.3);
+}
+
+.chat-submit-button {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(98, 0, 238, 0.9);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chat-submit-button:hover {
+  background: rgba(98, 0, 238, 1);
+  transform: scale(1.05);
+}
+
+/* Required empty space to ensure visibility */
+.chat-footer-spacer {
+  height: 80px;
+  width: 100%;
+}
+
+/* Force correct positioning for app container */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* RTL support for Arabic */
+[lang="ar"],
+.message-content[lang="ar"] {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .message {
+    max-width: 90%;
+  }
+  
+  .message-content {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  
+  .chat-input-container {
+    padding: 10px;
+  }
+  
+  .chat-input {
+    padding: 10px 14px;
+  }
+}
+
+/* Force proper layout */
+.main-content, .dashboard-container, .chat-area {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  height: 100% !important;
+}
+
+/* Override any fixed heights */
+.chat-messages {
+  flex: 1 1 auto !important;
+  height: auto !important;
+}
+
+/* App Container */
+.app-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: calc(100% - var(--sidebar-width));
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Chat Section */
+.chat-section {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(to bottom, rgba(30, 15, 60, 0.6), rgba(45, 25, 90, 0.6));
+    z-index: 5;
+    margin: 0;
+    border-left: 1px solid rgba(138, 79, 255, 0.2);
+    border-right: 1px solid rgba(138, 79, 255, 0.2);
+}
+
+/* Chat Messages */
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px 50px;
+    padding-bottom: 100px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Force dashboard content and chat section to fill width on mobile */
+@media (max-width: 768px) {
+    .dashboard-content, 
+    .chat-section {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .chat-messages {
+        padding: 15px 20px;
+        padding-bottom: 80px;
+    }
+}
+
+.sidebar {
+    width: 260px;
+    min-width: 220px;
+    max-width: 320px;
+    flex-shrink: 0;
+    height: 100vh;
+    background: #1a1038;
+    z-index: 10;
+    position: relative;
+}
+
+.main-content, .dashboard-container, .dashboard-content, .chat-section {
+    flex: 1 1 0;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 260px;
+    min-width: 220px;
+    max-width: 320px;
+    flex-shrink: 0;
+    height: 100vh;
+    background: #1a1038;
+    z-index: 10;
+    position: relative;
+}
+
+/* --- App Layout --- */
+.app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    height: 100vh;
+    background: transparent;
+}
+
+.dashboard-container, .dashboard-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Chat Section --- */
+.chat-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(30, 15, 60, 0.6), rgba(45, 25, 90, 0.6));
+    margin: 0;
+    border-left: 1px solid rgba(138, 79, 255, 0.1);
+    border-right: 1px solid rgba(138, 79, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- Chat Messages --- */
+.chat-messages {
+    flex: 1 1 0;
+    overflow-y: auto;
+    padding: 32px 48px 120px 48px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    background: none;
+}
+
+.message {
+    max-width: 70%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    z-index: 10;
+}
+.message.user {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+.message.assistant {
+    margin-right: auto;
+}
+.message-content {
+    border-radius: 18px;
+    padding: 14px 18px;
+    font-size: 15px;
+    background: #3c2369;
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    line-height: 1.5;
+    word-break: break-word;
+}
+.message.user .message-content {
+    background: linear-gradient(135deg, #6200ee, #a742ff);
+}
+.message.assistant .message-content {
+    background: linear-gradient(135deg, #3c2369, #4b3182);
+}
+.message-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    font-size: 18px;
+    font-weight: bold;
+    background: #4b3182;
+    color: #fff;
+}
+.message.user .message-avatar {
+    background: linear-gradient(135deg, #6200ee, #a742ff);
+}
+
+/* --- Chat Input --- */
+.chat-input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background: rgba(30, 15, 60, 0.95);
+    border-top: 1px solid rgba(138, 79, 255, 0.2);
+    padding: 18px 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+.input-container {
+    display: flex;
+    align-items: center;
+    background: rgba(45, 25, 90, 0.8);
+    border-radius: 24px;
+    padding: 8px 12px;
+    border: 1px solid rgba(138, 79, 255, 0.5);
+    max-width: 900px;
+    width: 90%;
+}
+.input-container input[type="text"] {
+    flex: 1 1 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 15px;
+    padding: 10px;
+}
+.input-container input[type="text"]::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+.send-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6200ee, #a742ff);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 5px;
+    color: white;
+    transition: all 0.2s;
+}
+.send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(138, 79, 255, 0.5);
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .chat-messages {
+        padding: 18px 8px 100px 8px;
+    }
+    .input-container {
+        max-width: 100%;
+        width: 98%;
+    }
+}
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+        min-width: 60px;
+        max-width: 80px;
+    }
+    .chat-messages {
+        padding: 10px 2px 80px 2px;
+    }
+    .input-container {
+        max-width: 100%;
+        width: 100%;
+        padding: 4px 4px;
+    }
+}
+
+/* --- RTL Support --- */
+[lang="ar"] .message-content,
+.message-content[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+}
+
+/* --- Chat Card Container --- */
+.chat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    background: rgba(30, 15, 60, 0.95);
+    border-radius: 22px;
+    box-shadow: 0 8px 32px rgba(60, 35, 105, 0.18), 0 1.5px 8px rgba(98,0,238,0.08);
+    max-width: 700px;
+    width: 100%;
+    max-height: 80vh;
+    min-height: 340px;
+    margin: auto;
+    overflow: hidden;
+    border: 1.5px solid rgba(138, 79, 255, 0.13);
+    position: relative;
+}
+
+.dashboard-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    background: none;
+    min-width: 0;
+}
+
+/* --- Chat Messages inside Card --- */
+.chat-card .chat-messages {
+    flex: 0 1 auto;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 32px 32px 16px 32px;
+    background: none;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- Chat Input inside Card --- */
+.chat-card .chat-input {
+    position: static;
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0 0 24px 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.chat-card .input-container {
+    width: 100%;
+    max-width: 100%;
+    background: rgba(45, 25, 90, 0.92);
+    border-radius: 18px;
+    border: 1px solid rgba(138, 79, 255, 0.18);
+    padding: 8px 12px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .chat-card {
+        max-width: 98vw;
+        min-height: 200px;
+    }
+    .chat-card .chat-messages {
+        padding: 16px 6px 8px 6px;
+    }
+}
+@media (max-width: 600px) {
+    .chat-card {
+        max-width: 100vw;
+        width: 100vw;
+        min-height: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .dashboard-content {
+        padding: 0;
+    }
+}
+
+/* --- Chat Card Positioner for Custom Placement --- */
+.dashboard-content {
+    position: relative;
+}
+.chat-card-positioner {
+    position: absolute;
+    top: 55%;   /* Move lower by increasing this value */
+    left: 60%;  /* Move more right by increasing this value */
+    transform: translate(-50%, -50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* So only the card itself is interactive */
+}
+.chat-card {
+    pointer-events: auto;
+}
+
+/* You can fine-tune top/left above for your perfect placement! */ 

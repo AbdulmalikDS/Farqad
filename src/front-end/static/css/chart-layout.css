@@ -1,0 +1,92 @@
+/* 
+ * Chart Layout CSS
+ * Using flexbox to create a better spaced layout for chart elements
+ */
+
+/* Main dashboard container using flexbox */
+.charts-panel .panel-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+/* Main chart container with proper spacing */
+.chart-container-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  border: 2px solid rgba(139, 92, 246, 0.3) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Better hover effect for charts */
+.chart-container-wrapper:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 25px rgba(124, 58, 237, 0.25) !important;
+}
+
+/* Financial dashboard flexbox layout */
+.financial-dashboard {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 45px !important;
+}
+
+/* Chart rows as flex containers */
+.charts-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+}
+
+/* Set width for half-width charts */
+.half-width {
+  flex-basis: calc(50% - 25px) !important;
+  min-width: 200px !important;
+}
+
+/* Financial table with better spacing */
+.financial-table-wrapper {
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Handle responsiveness better */
+@media (max-width: 768px) {
+  .charts-row {
+    flex-direction: column !important;
+  }
+  
+  .half-width {
+    flex-basis: 100% !important;
+  }
+}
+
+/* Create a visual separation between chart sections */
+.chart-container-wrapper:not(:last-child)::after {
+  content: '';
+  height: 30px;
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Better spacing for the panel header */
+.panel-header {
+  padding: 20px 25px !important;
+  margin-bottom: 15px !important;
+}
+
+/* Improved spacing for chart titles */
+.chart-container-wrapper h4 {
+  margin-bottom: 20px !important;
+  font-weight: 600 !important;
+}
+
+/* Ensure proper aspect ratio for charts */
+.chart-container {
+  aspect-ratio: 16/9 !important;
+  width: 100% !important;
+} 

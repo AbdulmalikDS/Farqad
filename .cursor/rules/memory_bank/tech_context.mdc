@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Tech Context: Personal Finance Chatbot
+
+## Technologies Used
+-   **Backend Language & Framework**: Python 3.10+ with FastAPI for building robust and high-performance APIs.
+-   **Frontend Stack**: Currently HTML, CSS, JavaScript served by a Flask application (`src/front-end/app.py`). Consideration for future migration to a modern JS framework (React, Vue) for enhanced dashboard interactivity.
+-   **Primary Database**: MongoDB, accessed asynchronously via the `motor` library for efficient non-blocking database operations.
+-   **AI/LLM Services**: Abstracted via `LLMProviderFactory`. Potential providers include OpenAI (GPT series), Perplexity AI, or other compatible models. Specific models for generation (`GENERATION_MODEL_ID`) and embeddings (`EMBEDDING_MODEL_ID`) are configurable.
+-   **Vector Database**: Abstracted via `VectorDBProviderFactory`. Options include Pinecone, Weaviate, Qdrant, ChromaDB, or others, depending on performance and feature requirements for RAG.
+-   **Configuration Management**: `pydantic` for robust settings management, ensuring type safety and validation of environment variables and configuration parameters (see `helpers/config.py`).
+-   **Language Processing & Templates**: `TemplateParser` for managing bilingual (Arabic/English) prompt templates and responses.
+-   **Document Processing (Potential Libraries)**:
+    -   OCR: `Tesseract OCR` (via `pytesseract`), `OpenCV` for image preprocessing.
+    -   PDF Handling: `PyPDF2`, `pdfplumber`.
+    -   Text Extraction & Cleaning: Standard Python string manipulation, `nltk`, `spaCy` for advanced NLP tasks.
+-   **Dashboard Visualization (Potential Libraries if Flask is kept/enhanced or if moving to JS framework)**:
+    -   Python (Flask): `Plotly Dash`, `Bokeh`, `Matplotlib` (for static charts served via API).
+    -   JavaScript: `Chart.js`, `D3.js`, `Recharts` (if using React).
+
+## Development Setup
+-   Standard Python virtual environment (`venv` or `conda`).
+-   Dependency management via `pip` with a `requirements.txt` file (to be maintained rigorously).
+-   Separate execution scripts/commands for running the FastAPI backend and the Flask frontend during development.
+-   Linters (e.g., `Flake8`, `Black`) and type checkers (`MyPy`) should be used to maintain code quality.
+
+## Technical Constraints
+-   **Bilingual Support**: Efficient and accurate processing for both Arabic (right-to-left) and English text is critical across all layers (NLP, UI rendering).
+-   **Document Analysis Performance**: OCR, text extraction, and embedding generation for uploaded documents must be reasonably fast to avoid poor user experience.
+-   **Data Security**: End-to-end encryption for sensitive financial data (at rest and in transit). Robust authentication and authorization mechanisms are essential.
+-   **Scalability**: Architecture should allow for scaling of individual components (backend API, AI services, databases) as user load increases.
+
+## Key Dependencies (Illustrative - to be detailed in `requirements.txt`)
+-   `fastapi`, `uvicorn` (ASGI server)
+-   `motor` (Async MongoDB driver)
+-   `pydantic` (Data validation, settings)
+-   `httpx` or `requests` (HTTP client for external APIs)
+-   `python-jose[cryptography]`, `passlib[bcrypt]` (Authentication - commonly used)
+-   `Flask` (Current frontend server)
+-   LLM provider SDKs (e.g., `openai`)
+-   Vector DB client SDKs (e.g., `pinecone-client`)
+-   OCR/PDF libraries (e.g., `pytesseract`, `pypdf2`)
+
+## Tech Stack Overview
+```mermaid
+flowchart LR
+    subgraph UserFacing
+        Frontend[Flask / HTML, CSS, JS]
+    end
+    subgraph BackendServices
+        direction LR
+        FastAPI_App[FastAPI Application]
+        subgraph AI_Core
+            LLM_Factory[LLMProviderFactory]
+            VectorDB_Factory[VectorDBProviderFactory]
+        end
+        Config[Pydantic Settings]
+        TemplateEngine[TemplateParser]
+    end
+    subgraph DataStores
+        direction TB
+        MongoDB[(MongoDB)]
+        VectorDB_Instance[(Vector DB)]
+    end
+    subgraph External_AI_Services
+        LLM_API[LLM API e.g. OpenAI]
+    end
+
+    Frontend -- REST API --> FastAPI_App
+    FastAPI_App -- Uses --> Config
+    FastAPI_App -- Uses --> TemplateEngine
+    FastAPI_App -- Uses --> LLM_Factory
+    FastAPI_App -- Uses --> VectorDB_Factory
+    LLM_Factory -- Connects to --> LLM_API
+    VectorDB_Factory -- Connects to --> VectorDB_Instance
+    FastAPI_App -- Stores/Retrieves Data --> MongoDB
+
+```
+
+

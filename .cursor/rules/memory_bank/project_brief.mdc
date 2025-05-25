@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Brief: Personal Finance Chatbot
+
+This project aims to develop an intelligent chatbot that serves as a personal financial assistant. It empowers users to manage their finances effectively by providing intuitive tools and advice in both Arabic and English.
+
+## Core Requirements and Goals
+
+The primary goal is to make personal finance management accessible, understandable, and less daunting for a diverse user base. This involves breaking down language barriers and simplifying complex financial concepts.
+
+```mermaid
+graph TD
+    A[User] -- Asks Financial Question (Ar/En) --> B(Chatbot);
+    A -- Uploads Financial Document --> B;
+    B -- Processes Input (AI Backend) --> C{Understands & Analyzes};
+    C -- Generates Response/Advice --> D[Provides Answer/Advice (Ar/En)];
+    C -- Extracts Data for Dashboard --> E[Updates Budget Insights];
+    D --> A;
+    F[Dashboard] -- Displays Insights --> A;
+    E --> F;
+```
+
+### Key Features:
+-   **Bilingual Communication**: The chatbot must seamlessly converse and provide information in both Arabic (Ar) and English (En), including understanding mixed-language inputs if feasible.
+-   **Financial Q&A**: Users can ask a wide range of questions about their personal spending habits, various savings strategies, effective budgeting techniques, and general financial literacy topics.
+-   **Friendly & Clear Interaction**: The chatbot must adopt a helpful, empathetic, and friendly tone. All financial information and advice should be presented clearly, avoiding jargon, or explaining it if necessary (Grade 7 literacy).
+-   **Financial Document Analysis**: Users can securely upload financial documents such as receipts, invoices, or bank statements. The system will perform OCR (Optical Character Recognition) if needed, extract relevant data, and analyze it to provide insights or answer user queries related to the document.
+-   **Personalized Financial Advice**: Based on user interactions, analyzed documents, and stated goals, the chatbot will offer tailored advice on saving money, investment opportunities (if in scope), debt management, and making better financial choices.
+-   **Budget Insights Dashboard**: Users will have access to a simple, visually appealing dashboard. This dashboard will provide summaries of spending patterns, budget adherence, savings progress, and other key financial insights derived from their data.
+-   **AI-Powered Backend**: The core of the chatbot relies on a robust AI backend, utilizing Natural Language Processing (NLP) to understand user messages, and machine learning models (potentially including RAG with vector databases) to generate relevant and accurate responses and analyses.

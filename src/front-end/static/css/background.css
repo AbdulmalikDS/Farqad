@@ -1,0 +1,224 @@
+/* Space background with multiple layers */
+.space-background, .bg-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(145deg, #13082D 0%, #2D1163 50%, #1E0F45 100%);
+    overflow: hidden;
+}
+
+/* Purple nebula glow effects */
+.bg-stars::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 40%, rgba(168, 85, 247, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 40% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 40%);
+    filter: blur(60px);
+    opacity: 0.6;
+}
+
+/* Stars layer 1 - Small stars */
+.stars-small {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 25% 25%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 50% 50%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 75% 75%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 100% 100%, white, rgba(255, 255, 255, 0));
+    background-size: 150px 150px;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+/* Stars layer 2 - Medium stars */
+.stars-medium {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 20%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+        radial-gradient(2px 2px at 40% 60%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0)),
+        radial-gradient(2px 2px at 60% 20%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    background-size: 200px 200px;
+    animation: twinkle 6s ease-in-out infinite;
+}
+
+/* Stars layer 3 - Large stars */
+.stars-large {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(3px 3px at 15% 15%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)),
+        radial-gradient(3px 3px at 40% 80%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)),
+        radial-gradient(3px 3px at 80% 10%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    background-size: 300px 300px;
+    animation: twinkle 8s ease-in-out infinite;
+}
+
+/* Nebula effect */
+.nebula {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(193, 59, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 40%, rgba(151, 71, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 60%, rgba(228, 100, 255, 0.15) 0%, transparent 50%);
+    filter: blur(40px);
+    opacity: 0.8;
+}
+
+/* Shooting stars container */
+.shooting-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Shooting star */
+.shooting-star {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+    transform: rotate(45deg);
+}
+
+.shooting-star:nth-child(1) {
+    top: 20%;
+    left: -100px;
+    animation: shooting 4s linear infinite;
+    animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+    top: 40%;
+    left: -100px;
+    animation: shooting 6s linear infinite;
+    animation-delay: 2s;
+}
+
+.shooting-star:nth-child(3) {
+    top: 60%;
+    left: -100px;
+    animation: shooting 5s linear infinite;
+    animation-delay: 4s;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.3; }
+}
+
+@keyframes shooting {
+    0% {
+        transform: translateX(0) rotate(45deg);
+        opacity: 1;
+    }
+    20% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(2000px) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* Stars layer 1 - Tiny stars */
+.bg-stars::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 10% 10%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 20% 20%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 30% 30%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 40% 40%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 50% 50%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 60% 60%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 70% 70%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 80% 80%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 90% 90%, white, rgba(255, 255, 255, 0));
+    background-size: 200px 200px;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+/* Stars layer 2 - Small stars */
+.stars-small {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 25% 25%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 50% 50%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 75% 75%, white, rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 100% 100%, white, rgba(255, 255, 255, 0));
+    background-size: 150px 150px;
+    animation: twinkle 4s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+/* Extra twinkling stars */
+.twinkling-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.twinkling-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.twinkling-star:nth-child(1) { top: 10%; left: 15%; animation: star-pulse 2s infinite; }
+.twinkling-star:nth-child(2) { top: 20%; left: 35%; animation: star-pulse 3s infinite 0.3s; }
+.twinkling-star:nth-child(3) { top: 30%; left: 55%; animation: star-pulse 2.5s infinite 0.7s; }
+.twinkling-star:nth-child(4) { top: 15%; left: 75%; animation: star-pulse 2.8s infinite 0.2s; }
+.twinkling-star:nth-child(5) { top: 40%; left: 25%; animation: star-pulse 3.2s infinite 0.5s; }
+.twinkling-star:nth-child(6) { top: 65%; left: 45%; animation: star-pulse 2.6s infinite 0.9s; }
+.twinkling-star:nth-child(7) { top: 75%; left: 85%; animation: star-pulse 3.4s infinite 0.4s; }
+.twinkling-star:nth-child(8) { top: 80%; left: 15%; animation: star-pulse 2.7s infinite 0.8s; }
+.twinkling-star:nth-child(9) { top: 85%; left: 65%; animation: star-pulse 3.1s infinite 0.6s; }
+.twinkling-star:nth-child(10) { top: 35%; left: 95%; animation: star-pulse 2.4s infinite 0.3s; }
+
+@keyframes star-pulse {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+} 

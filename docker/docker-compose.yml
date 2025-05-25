@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mongodb:
     image: mongo:7-jammy
@@ -12,16 +14,23 @@ services:
     networks:
       - backend
     restart: always
-
-  pgvector:
-    image: pgvector/pgvector:0.8.0-pg17
-    container_name: pgvector
+  
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
     ports:
-      - "5432:5432"
-    volumes:
-      - pgvector_data:/var/lib/postgresql/data
+      - "11434:11434"
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - OLLAMA_ORIGINS=*
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]
+              count: all
+    volumes:
+      - ollama:/root/.ollama
     networks:
       - backend
     restart: always
@@ -31,4 +40,4 @@ networks:
 
 volumes:
   mongodata:
-  pgvector_data:
+  ollama:

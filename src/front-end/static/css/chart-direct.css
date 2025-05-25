@@ -1,0 +1,682 @@
+/* 
+ * Direct Chart Spacing Fix
+ * A targeted approach to create distinct spacing between charts
+ */
+
+/* Reset conflicting styles from previous approaches */
+.chart-container-wrapper {
+  transform: none !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  clear: both !important;
+}
+
+/* Fix chart panel to ensure proper spacing */
+.charts-panel .panel-content {
+  display: block !important;
+  padding: 30px 20px !important;
+}
+
+/* Create dramatic separation between chart sections */
+.chart-container-wrapper {
+  margin-bottom: 100px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(138, 79, 255, 0.4) !important;
+  border-radius: 15px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(30, 25, 65, 0.2) !important;
+  position: relative !important;
+}
+
+/* Add visual separator line between chart sections */
+.chart-container-wrapper:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(138, 79, 255, 0.5), transparent);
+}
+
+/* Primary chart with even more space below it */
+.primary-chart-wrapper {
+  margin-bottom: 120px !important;
+  position: relative !important;
+}
+
+/* Add distinct header styling to create visual separation */
+.chart-container-wrapper h4 {
+  text-align: center !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: white !important;
+  margin-bottom: 25px !important;
+  padding-bottom: 15px !important;
+  border-bottom: 1px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Ensure every chart has a distinct background */
+.chart-container {
+  background: linear-gradient(145deg, rgba(40, 30, 80, 0.4) 0%, rgba(60, 40, 120, 0.2) 100%) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  margin-top: 15px !important;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Add decorative elements to enhance visual separation */
+.chart-container-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  background: rgba(138, 79, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(138, 79, 255, 0.8);
+}
+
+/* Reset any conflicting transform styles */
+.chart-container:hover {
+  transform: none !important;
+}
+
+/* Make financial summary distinctly separate */
+.financial-summary {
+  margin-top: 100px !important;
+  padding-top: 40px !important;
+  position: relative !important;
+}
+
+/* Add shadow separator between chart groups */
+.chart-container-wrapper:nth-child(2)::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(138, 79, 255, 0.3), transparent 70%);
+}
+
+/* Ensure proper spacing for the panel container */
+.charts-panel {
+  padding: 20px 10px !important;
+  background: linear-gradient(145deg, rgba(30, 15, 60, 0.97) 0%, rgba(26, 9, 51, 0.99) 100%) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(138, 79, 255, 0.4) !important;
+}
+
+/* Force charts to display in column instead of row */
+.charts-row {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  gap: 80px !important;
+}
+
+/* Make charts full width */
+.half-width {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Add spacing between secondary charts */
+.charts-row .chart-container-wrapper:nth-child(1) {
+  margin-bottom: 0 !important;
+}
+
+/* Add visual separator between the charts in a row */
+.charts-row .chart-container-wrapper:nth-child(1)::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(138, 79, 255, 0.5), transparent);
+}
+
+/* Add custom order for charts - using more compatible selectors */
+.charts-panel .panel-content > div:nth-of-type(1) {
+  order: 1 !important;
+}
+
+.charts-panel .panel-content > div:nth-of-type(2) {
+  order: 2 !important;
+  margin-top: 60px !important;
+  margin-bottom: 60px !important;
+}
+
+.charts-panel .panel-content > div:nth-of-type(3) {
+  order: 3 !important;
+  display: block !important; /* Show Volume Analysis */
+  margin-top: 60px !important;
+}
+
+/* Move financial summary to the bottom */
+.financial-summary {
+  order: 10 !important;
+  margin-top: 60px !important;
+}
+
+/* Ensure panel content uses flexbox for ordering */
+.charts-panel .panel-content {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Remove all starry background CSS */
+
+/* Add starry background matching the landing page theme */
+body, .chat-area {
+  background-color: #2e1458 !important;
+  background-image: radial-gradient(white, rgba(255, 255, 255, 0) 2px) !important;
+  background-size: 200px 200px !important;
+  position: relative !important;
+}
+
+/* Add multiple layers of stars with different sizes and densities */
+body::before, .chat-area::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(white, rgba(255, 255, 255, 0) 1px),
+    radial-gradient(white, rgba(255, 255, 255, 0) 1.5px);
+  background-size: 120px 120px, 170px 170px;
+  background-position: 0 0, 35px 35px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Add a few random brighter stars */
+body::after, .chat-area::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(white, rgba(255, 255, 255, 0) 3px);
+  background-size: 400px 400px;
+  background-position: 10px 10px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content displays on top of the stars */
+.app-container, .chat-messages, .message {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make the entire application have the starry theme */
+.app-container, .sidebar, .chat-mode-selector, .active-document-panel, 
+.new-chat-btn, .conversations, .chat-mode-btn {
+  background-color: transparent !important;
+}
+
+/* Ensure the chart panel has proper styling with the starry theme */
+.charts-panel {
+  background: rgba(30, 15, 60, 0.9) !important;
+  backdrop-filter: blur(5px) !important;
+  border: 1px solid rgba(138, 79, 255, 0.4) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 16px !important;
+}
+
+/* Style system messages to fit the galaxy theme */
+.message[data-sender="system"], 
+.message.system {
+  width: 90% !important;
+  margin: 20px auto 25px !important;
+  border-radius: 16px !important;
+  background: rgba(25, 10, 50, 0.75) !important;
+  border: 1px solid rgba(138, 79, 255, 0.4) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(4px) !important;
+  position: relative !important;
+  overflow: visible !important;
+  padding: 3px !important;
+  transform: none !important;
+}
+
+/* Add subtle glow effect to system message borders */
+.message[data-sender="system"]::before,
+.message.system::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 16px;
+  background: linear-gradient(45deg, rgba(138, 79, 255, 0.6), rgba(30, 15, 60, 0), rgba(138, 79, 255, 0.6));
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Style system message content */
+.message[data-sender="system"] .message-content,
+.message.system .message-content {
+  background: transparent !important;
+  padding: 18px 22px !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  max-width: 100% !important;
+}
+
+/* Add subtle icon to identify system messages */
+.message[data-sender="system"] .message-content::before,
+.message.system .message-content::before {
+  content: "ℹ️";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* System message transition effect */
+.message[data-sender="system"],
+.message.system {
+  transition: all 0.3s ease-out !important;
+}
+
+.message[data-sender="system"]:hover,
+.message.system:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Improve chat message styling for better appearance */
+.message {
+  max-width: 80% !important;
+  margin-bottom: 15px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  position: relative !important;
+  z-index: 2 !important;
+  clear: both !important;
+  transition: transform 0.2s ease !important;
+}
+
+/* User message styling */
+.message.user {
+  margin-left: auto !important;
+  margin-right: 20px !important;
+  flex-direction: row-reverse !important;
+}
+
+/* Assistant message styling */
+.message.assistant {
+  margin-right: auto !important;
+  margin-left: 20px !important;
+}
+
+/* Message content container */
+.message-content {
+  background: rgba(60, 35, 105, 0.8) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(138, 79, 255, 0.5) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  padding: 14px 18px !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(4px) !important;
+  max-width: calc(100% - 60px) !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.5 !important;
+  font-size: 15px !important;
+  transition: all 0.2s ease !important;
+}
+
+/* User message unique styling */
+.message.user .message-content {
+  background: rgba(98, 0, 238, 0.8) !important;
+  border-top-right-radius: 4px !important;
+  box-shadow: 0 4px 12px rgba(98, 0, 238, 0.25) !important;
+}
+
+/* Assistant message unique styling */
+.message.assistant .message-content {
+  background: rgba(60, 35, 105, 0.8) !important;
+  border-top-left-radius: 4px !important;
+}
+
+/* Message avatar styling */
+.message-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 10px !important;
+  background: rgba(60, 35, 105, 0.8) !important;
+  border: 1px solid rgba(138, 79, 255, 0.5) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.message.user .message-avatar {
+  background: rgba(98, 0, 238, 0.8) !important;
+}
+
+/* Add subtle glow effect to message on hover */
+.message-content:hover {
+  box-shadow: 0 6px 16px rgba(89, 39, 184, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Improve readability of Arabic text */
+.message-content:lang(ar) {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  font-size: 16px !important;
+}
+
+/* Fix the chat container */
+.chat-messages {
+  padding: 20px !important;
+  overflow-y: auto !important;
+  height: calc(100vh - 150px) !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(138, 79, 255, 0.5) rgba(30, 15, 60, 0.3) !important;
+  padding-bottom: 100px !important;
+}
+
+/* Ensure proper scrollbar styling */
+.chat-messages::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(30, 15, 60, 0.3) !important;
+  border-radius: 4px !important;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(138, 79, 255, 0.5) !important;
+  border-radius: 4px !important;
+}
+
+/* Improve chat input area */
+.chat-input {
+  background: rgba(45, 25, 90, 0.8) !important;
+  border: 1px solid rgba(138, 79, 255, 0.5) !important;
+  border-radius: 24px !important;
+  padding: 12px 16px !important;
+  backdrop-filter: blur(5px) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+  width: 90% !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  color: white !important;
+  font-size: 15px !important;
+  outline: none !important;
+}
+
+.chat-input:focus {
+  border-color: rgba(138, 79, 255, 0.8) !important;
+  box-shadow: 0 4px 20px rgba(138, 79, 255, 0.4) !important;
+}
+
+/* Fix Arabic text display and RTL support */
+[lang="ar"],
+.message-content:has(span:lang(ar)),
+.message-content:has(div:lang(ar)),
+.message-content:has(p:lang(ar)) {
+  direction: rtl !important;
+  text-align: right !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  line-height: 1.8 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Improve user message alignment for RTL */
+.message.user {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* Improve assistant message alignment for RTL */
+.message.assistant {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+/* Better system message styling for highlighted area */
+.message[data-sender="system"], 
+.message.system {
+  width: 95% !important;
+  margin: 25px auto 35px !important;
+  background: rgba(40, 20, 80, 0.5) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(138, 79, 255, 0.5) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Make system message content more readable */
+.message[data-sender="system"] .message-content,
+.message.system .message-content {
+  background: transparent !important;
+  padding: 18px 22px !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  max-width: 100% !important;
+}
+
+/* Fix for long messages with RTL text */
+.message-content {
+  white-space: pre-wrap !important;
+  max-width: 90% !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Apply proper padding to RTL content */
+.message-content:lang(ar) {
+  padding-right: 20px !important;
+  padding-left: 20px !important;
+  font-size: 16px !important;
+}
+
+/* Fix chat input for RTL support */
+.chat-input {
+  direction: auto !important;
+  unicode-bidi: plaintext !important;
+}
+
+/* Ensure assistant messages display RTL text properly */
+.message.assistant .message-content:has(*:lang(ar)),
+.message.assistant .message-content:lang(ar) {
+  border-top-right-radius: 18px !important;
+  border-top-left-radius: 4px !important;
+  text-align: right !important;
+}
+
+/* Ensure user messages display RTL text properly */
+.message.user .message-content:has(*:lang(ar)),
+.message.user .message-content:lang(ar) {
+  border-top-left-radius: 18px !important;
+  border-top-right-radius: 4px !important;
+  text-align: right !important;
+}
+
+/* Fix for the area highlighted in red - specific system message improvement */
+.message.system .message-content {
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 20px 25px !important;
+}
+
+/* Improve text size and readability for Arabic system messages */
+.message.system .message-content:lang(ar) {
+  line-height: 1.9 !important;
+  font-size: 16.5px !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* Add space between paragraphs within messages */
+.message-content p {
+  margin-bottom: 12px !important;
+}
+
+/* Ensure proper text color for better readability */
+.message-content {
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix chat input positioning at the bottom of the screen */
+.chat-input-container, 
+.input-container,
+.chat-footer {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: rgba(40, 20, 80, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  padding: 15px 20px !important;
+  border-top: 1px solid rgba(138, 79, 255, 0.4) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3) !important;
+  z-index: 100 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Style the actual input box */
+.chat-input {
+  width: 85% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  background: rgba(45, 25, 90, 0.7) !important;
+  border: 1px solid rgba(138, 79, 255, 0.4) !important;
+  border-radius: 12px !important;
+  padding: 14px 18px !important;
+  color: white !important;
+  font-size: 15px !important;
+}
+
+/* Fix input text direction for mixed languages */
+.chat-input[dir="auto"] {
+  text-align: start !important;
+}
+
+/* Fix message bubble widths on mobile */
+@media (max-width: 768px) {
+  .message {
+    max-width: 90% !important;
+  }
+  
+  .message-content {
+    max-width: calc(100% - 40px) !important;
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+  }
+  
+  .chat-input-container {
+    padding: 10px !important;
+  }
+  
+  .chat-input {
+    width: 85% !important;
+    padding: 10px 14px !important;
+  }
+  
+  .sidebar {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 60px !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s !important;
+  }
+  
+  .sidebar.expanded {
+    max-height: 100vh !important;
+  }
+  
+  .chat-area {
+    height: calc(100vh - 60px) !important;
+  }
+}
+
+/* Fix button styling in chat input */
+.chat-submit-button,
+.send-button {
+  background: rgba(98, 0, 238, 0.9) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.chat-submit-button:hover,
+.send-button:hover {
+  background: rgba(98, 0, 238, 1) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(138, 79, 255, 0.5) !important;
+}
+
+/* Apply overall layout fixes */
+.app-container {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* Fix sidebar to take full height */
+.sidebar {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 10 !important;
+  border-right: 1px solid rgba(138, 79, 255, 0.3) !important;
+  background: rgba(25, 10, 50, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Fix send button UI and position */
+.send-icon {
+  color: white !important;
+  font-size: 20px !important;
+}
+
+/* Fix Arabic specific issues with chat input */
+.chat-input:dir(rtl) {
+  text-align: right !important;
+}
+
+/* Fix content overflow in RTL messages */
+.message-content:lang(ar) {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+} 

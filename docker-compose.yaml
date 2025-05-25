@@ -1,0 +1,36 @@
+ version: "3.8"
+   services:
+     mini-rag-app:
+       image: abdulmalikds/farqad:latest
+       container_name: mini-rag-app
+       ports:
+         - "8000:8000"  # Backend
+         - "5001:5001"  # Frontend
+       environment:
+         - OPENAI_API_KEY=${OPENAI_API_KEY}
+         - MONGODB_URL=${MONGODB_URL}
+       volumes:
+         - ./uploads:/app/uploads
+         - ./qdrant_db:/app/qdrant_db
+       depends_on:
+         - mongodb
+       networks:
+         - backend
+
+     mongodb:
+       image: mongo:7-jammy
+       container_name: mongodb
+       ports:
+         - "27007:27017"
+       volumes:
+         - mongodata:/data/db
+       networks:
+         - backend
+       restart: always
+       
+   volumes:
+     mongodata:
+
+   networks:
+     backend:
+       driver: bridge

@@ -1,0 +1,130 @@
+/**
+ * Minimal CSS fixes for chat interface
+ * Only addresses the duplicate input issues
+ */
+
+/* Rule 1: Only show the chat input inside the chat-section */
+.chat-input {
+    display: none !important;
+}
+
+.chat-section > .chat-input {
+    display: block !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+}
+
+/* Rule 2: Make sure messages display properly */
+.message {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-bottom: 20px !important;
+}
+
+.message.user {
+    align-self: flex-end !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    flex-direction: row-reverse !important;
+}
+
+.message.assistant {
+    align-self: flex-start !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+.message-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    max-width: 80% !important;
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+}
+
+/* Rule 3: Ensure chat messages container is properly sized and scrollable */
+.chat-messages {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    height: calc(100% - 70px) !important;
+    padding-bottom: 120px !important;
+}
+
+/* Add styles for conversation item containers and delete buttons */
+.conversation-item-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.conversation-item-container:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.conversation-item {
+    flex: 1;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 10px 15px;
+    color: var(--text-light, #e2e8f0);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-chat-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 10px;
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.delete-chat-btn:hover {
+    color: #ef4444;
+}
+
+.conversation-item-container:hover .delete-chat-btn {
+    opacity: 1;
+}
+
+.clear-all-chats-btn {
+    padding: 8px 12px;
+    margin: 0 10px 10px 10px;
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: calc(100% - 20px);
+    transition: background-color 0.2s;
+}
+
+.clear-all-chats-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Make CSS independent of inline styles */
+.conversation-item span {
+    margin-right: 8px;
+} 

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farqad - AI Financial Assistant</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="static/css/standard-ui.css?v=1.2.3">
+    <link rel="stylesheet" href="static/css/enhanced-ui.css?v=1.2.0">
+    <link rel="stylesheet" href="static/css/chart-fixes.css?v=1.2.0">
+    <link rel="stylesheet" href="static/css/modals.css?v=1.2.0">
+    <link rel="stylesheet" href="static/css/background.css?v=1.2.0">
+    <link rel="stylesheet" href="static/css/chat-interface.css?v=1.0.0">
+    <link rel="stylesheet" href="static/css/chart-direct.css?v=1.0.0">
+    
+    <!-- Minimal chat fixes CSS - Loaded last to override other styles -->
+    <link rel="stylesheet" href="static/css/chat-fix.css?v=1.0.0">
+    <link rel="stylesheet" href="static/css/login-fix.css?v=1.0.0">
+    <!-- JavaScript Libraries -->
+    <!-- Load Chart.js directly -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <!-- Chart.js multi-level fallback system -->
+    <script>
+        // Create a fallback mechanism for Chart.js with multiple redundancies
+        window.chartJSLoaded = false;
+        
+        function loadChartJS() {
+            console.log('Attempting to load Chart.js from primary fallback source');
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js';
+            script.onload = function() {
+                console.log('Chart.js loaded successfully from fallback source');
+                window.chartJSLoaded = true;
+                
+                // Load plugin after Chart.js is loaded
+                const pluginScript = document.createElement('script');
+                pluginScript.src = 'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0';
+                document.head.appendChild(pluginScript);
+                
+                // Load our chart functions after Chart.js is available
+                const chartFuncsScript = document.createElement('script');
+                chartFuncsScript.src = 'static/js/chart-functions.js?v=1.2.0';
+                document.head.appendChild(chartFuncsScript);
+            };
+            script.onerror = function() {
+                console.error('Failed to load Chart.js from primary fallback. Trying secondary fallback');
+                // Try second fallback CDN
+                const backupScript = document.createElement('script');
+                backupScript.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js';
+                backupScript.onload = function() {
+                    console.log('Chart.js loaded successfully from secondary fallback');
+                    window.chartJSLoaded = true;
+                    
+                    // Load plugin after Chart.js is loaded
+                    const pluginScript = document.createElement('script');
+                    pluginScript.src = 'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0';
+                    document.head.appendChild(pluginScript);
+                    
+                    // Load our chart functions after Chart.js is available
+                    const chartFuncsScript = document.createElement('script');
+                    chartFuncsScript.src = 'static/js/chart-functions.js?v=1.2.0';
+                    document.head.appendChild(chartFuncsScript);
+                };
+                backupScript.onerror = function() {
+                    console.error('Failed to load Chart.js from both CDNs. Falling back to local minimal version');
+                    // Try our local minimal version as a last resort
+                    const localScript = document.createElement('script');
+                    localScript.src = 'static/js/chart.bundle.min.js?v=1.2.0';
+                    localScript.onload = function() {
+                        console.log('Local minimal Chart.js loaded');
+                        window.chartJSLoaded = true;
+                        
+                        // Load our chart functions after local Chart.js is available
+                        const chartFuncsScript = document.createElement('script');
+                        chartFuncsScript.src = 'static/js/chart-functions.js?v=1.2.0';
+                        document.head.appendChild(chartFuncsScript);
+                    };
+                    localScript.onerror = function() {
+                        console.error('All Chart.js loading attempts failed. Charts will not be available.');
+                        // Even though Chart.js failed to load, still load the chart functions
+                        // which will handle the degraded experience
+                        const chartFuncsScript = document.createElement('script');
+                        chartFuncsScript.src = 'static/js/chart-functions.js?v=1.2.0';
+                        document.head.appendChild(chartFuncsScript);
+                    };
+                    document.head.appendChild(localScript);
+                };
+                document.head.appendChild(backupScript);
+            };
+            document.head.appendChild(script);
+        }
+        
+        // Final check to ensure chart.js is loaded
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (!window.chartJSLoaded) {
+                    console.log('Chart.js still not detected after DOMContentLoaded. Loading local version...');
+                    var localChartScript = document.createElement('script');
+                    localChartScript.src = 'static/js/chart.bundle.min.js?v=1.2.0';
+                    document.head.appendChild(localChartScript);
+                }
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Try primary CDN Chart.js first -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" 
+            onload="window.chartJSLoaded = true;"
+            onerror="loadChartJS()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+    <!-- Added chart functions script - will load regardless of Chart.js status -->
+    <script src="static/js/chart-functions.js?v=1.2.0"></script>
+    <script>
+        // Log Chart.js availability on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Chart !== 'undefined') {
+                console.log('Chart.js is loaded successfully. Version:', Chart.version);
+                
+                // Initialize charts immediately
+                setTimeout(function() {
+                    renderAllCharts();
+                    console.log('Initial chart rendering triggered');
+                }, 100);
+            } else {
+                console.error('Chart.js failed to load! Charts will not work.');
+            }
+        });
+    </script>
+</head>
+<body class="charts-hidden">
+    <div class="bg-stars">
+        <div class="twinkling-stars">
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+            <div class="twinkling-star"></div>
+        </div>
+    </div>
+    <!-- Mobile menu toggle button -->
+    <button id="mobile-menu-toggle" class="menu-toggle">
+        ☰
+    </button>
+    <!-- Debug button for general mode -->
+    <div class="app-container">
+        <aside class="sidebar">
+            <a href="main.html" class="sidebar-header">
+                <img src="static/images/Screenshot_5-removebg-preview.png" alt="Farqad Logo" style="width: 120px; height: auto;">
+            </a>
+            
+            <div class="user-account-info" id="user-account-info" style="display: none;">
+                <div class="user-avatar-container">
+                    <div class="user-avatar" id="user-avatar"></div>
+                    <div class="user-name"></div>
+                </div>
+                <div class="account-type">
+                    <span id="account-type-dot"></span>
+                    <span id="account-type-text"></span>
+                </div>
+            </div>
+            
+            <div class="chat-mode-selector">
+                <h3>CHAT MODE</h3>
+                <div class="chat-mode-buttons">
+                    <button class="chat-mode-btn active" id="general-mode" onclick="forceGeneralMode(); return false;">
+                        <span class="chat-mode-icon">💬</span>
+                        <span>General Chat</span>
+                    </button>
+                    <button class="chat-mode-btn" id="document-mode">
+                        <span class="chat-mode-icon">📄</span>
+                        <span>Document Mode</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Document Panel -->
+            <div class="active-document-panel" id="active-document-panel">
+                <h3>ACTIVE DOCUMENT</h3>
+                <div class="active-document-container">
+                    <div class="document-info">
+                        <span id="active-doc-icon">📑</span>
+                        <div>
+                            <div id="active-doc-name">No document selected</div>
+                            <div id="active-doc-size"></div>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button id="change-document-btn">Change</button>
+                        <button id="sidebar-clear-doc-btn">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="new-chat-btn" id="new-chat-btn">
+                <span>+</span>
+                New chat
+            </button>
+            
+            <div class="conversations">
+                <h3 class="conversations-header">RECENT CHATS</h3>
+                <a href="#" class="conversation-item">
+                    <span>💻</span>
+                    Create Html Game Environment
+                </a>
+                <a href="#" class="conversation-item">
+                    <span>🚨</span>
+                    Apply To Leave For Emergency
+                </a>
+                <a href="#" class="conversation-item">
+                    <span>🎨</span>
+                    What is UI UX Design?
+                </a>
+                <a href="#" class="conversation-item">
+                    <span>💰</span>
+                    Create POS System
+                </a>
+                <a href="#" class="conversation-item">
+                    <span>🎯</span>
+                    What is UX Audit?
+                </a>
+            </div>
+            
+            <div class="login-container">
+                <button id="login-btn" onclick="location.href='login.html'">
+                    Login
+                </button>
+                <button id="logout-btn" class="logout-btn">
+                    <span class="logout-icon">🚪</span>
+                    <span class="logout-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <!-- Chat-focused layout -->
+            <div class="dashboard-container">
+                <!-- Top bar with controls -->
+                <div class="dashboard-header">
+                    <div class="dashboard-controls">
+                        <button class="toggle-charts-btn" id="toggle-charts-btn">
+                            <span class="chart-icon">📊</span>
+                            <span>Financial Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- New chat-focused layout -->
+                <div class="dashboard-content">
+                    <!-- Chat section -->
+                    <div class="chat-section">
+                        <div class="chat-messages">
+                <!-- Message will be added dynamically by the chat.js script -->
+                            
+                            <!-- Loading indicator -->
+                            <div class="loading-indicator" style="display: none;">
+                                <span class="loading-text">Thinking</span>
+                                <div class="loading-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- Document List Panel -->
+                        <div class="document-list-panel" id="document-list-panel">
+                            <div class="document-list-header">
+                                <h4>Your Documents</h4>
+                                <button id="close-doc-list">×</button>
+                            </div>
+                            
+                            <div class="document-list-description">
+                                Select a document to chat with. Questions will be answered based on its content.
+                            </div>
+                            
+                            <div id="document-items-list">
+                                <!-- Documents will be listed here -->
+                                <div class="loading-docs">
+                                    <div class="loading-spinner"></div>
+                                    <div>Loading your documents...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="document-list-actions">
+                                <button id="upload-new-doc-btn">
+                                    <span>+</span> Upload New Document
+                                </button>
+                                <button id="close-document-list">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat input moved below messages -->
+                        <div class="chat-input">
+                            <div class="input-container">
+                                <label class="upload-button" for="file-upload">
+                                    <span class="plus-icon">+</span>
+                                    <input type="file" id="file-upload" style="display: none" accept="image/*,.pdf,.doc,.docx,.txt">
+                                </label>
+                                <input type="text" placeholder="Ask me about finance, budgeting, or upload a document...">
+                                <button type="button" class="send-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                                
+                            <div class="file-preview" id="file-preview" style="display:none;">
+                                <img id="preview-image">
+                                <div class="file-info">
+                                    <div class="file-name" id="file-name"></div>
+                                    <div class="file-size" id="file-size"></div>
+                                </div>
+                                <button type="button" class="remove-file" id="remove-file">×</button>
+                            </div>
+                            
+                            <!-- Active Document Display -->
+                            <div class="active-document-indicator" id="active-document-display" style="display:none;">
+                                <div class="active-document-info">
+                                    <div>
+                                        <span>Active Document:</span>
+                                        <span id="active-document-name"></span>
+                                    </div>
+                                    <button id="clear-document-focus">×</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right-side charts panel -->
+    <div class="charts-panel" id="charts-panel">
+        <button class="close-charts-btn" id="close-charts-btn">×</button>
+        
+        <div class="panel-content">
+            <h2 style="color: white; margin-top: 10px; margin-bottom: 20px; text-align: center;">Financial Dashboard</h2>
+            
+            <div class="chart-container-wrapper primary-chart-wrapper">
+                <h4>Financial Overview</h4>
+                <div class="chart-container">
+                    <canvas id="llmGeneratedChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container-wrapper">
+                <h4>Revenue Trend</h4>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="charts-row">
+                <div class="chart-container-wrapper half-width">
+                    <h4>Expense Analysis</h4>
+                    <div class="chart-container">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container-wrapper half-width">
+                    <h4>Savings Growth</h4>
+                    <div class="chart-container">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="financial-table-wrapper">
+                <h4>Financial Summary</h4>
+                <div class="financial-table compact" id="financial-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Borrowings</td>
+                                <td class="data-highlight">4.68B</td>
+                                <td>53.5%</td>
+                            </tr>
+                            <tr>
+                                <td>Govt. charges</td>
+                                <td class="data-highlight">3.01B</td>
+                                <td>34.4%</td>
+                            </tr>
+                            <tr>
+                                <td>Derivatives</td>
+                                <td class="data-highlight">354M</td>
+                                <td>4.1%</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Total</strong></td>
+                                <td class="data-highlight"><strong>8.74B</strong></td>
+                                <td><strong>100%</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version parameter to prevent caching -->
+    <script src="static/js/chat.js?v=1.2.1"></script>
+    <script src="static/js/upload.js?v=1.2.0"></script>
+    <script src="static/js/ui-utils.js?v=1.2.3"></script>
+    <script src="static/js/chat-interface.js?v=1.0.0"></script>
+    <script>
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Do you want to clear your conversation history when logging out?')) {
+                // Clear conversation history
+                localStorage.removeItem('conversationHistory');
+                conversationHistory = [];
+                updateMemoryCount();
+            }
+            
+            // Clear user data
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('adminname');
+            localStorage.removeItem('org_name');
+            
+            // Show toast notification
+            showToast('You have been logged out successfully', 'success');
+            
+            // Redirect to login page after a short delay
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 1500);
+        }
+        
+        // Set up login/logout buttons visibility based on login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutBtn = document.getElementById('logout-btn');
+            const loginBtn = document.getElementById('login-btn');
+            
+            if (logoutBtn && loginBtn) {
+                // Check if user is logged in
+                const isLoggedIn = localStorage.getItem('token') !== null;
+                
+                // Show/hide appropriate buttons
+                logoutBtn.style.display = isLoggedIn ? 'flex' : 'none';
+                loginBtn.style.display = isLoggedIn ? 'none' : 'flex';
+                
+                // Add click handler for logout button
+                logoutBtn.addEventListener('click', handleLogout);
+            }
+            
+            // Remove demo content if in a production environment
+            const isProduction = window.location.hostname !== 'localhost' && 
+                               window.location.hostname !== '127.0.0.1';
+                                
+            if (isProduction) {
+                // Remove demo conversation items
+                const conversationsDiv = document.querySelector('.conversations');
+                if (conversationsDiv) {
+                    conversationsDiv.innerHTML = '';
+                }
+            }
+            
+            // Initialize charts panel
+            initChartsPanel();
+            
+            // Check if user info should be displayed
+            updateUserAccountDisplay();
+        });
+        
+        // Update user account display based on login status
+        function updateUserAccountDisplay() {
+            const userInfoSection = document.getElementById('user-account-info');
+            const userAvatar = document.getElementById('user-avatar');
+            const userName = document.querySelector('.user-name');
+            const accountType = document.getElementById('account-type-text');
+            const accountDot = document.getElementById('account-type-dot');
+            
+            if (userInfoSection && userAvatar && userName && accountType) {
+                // Check all possible token and username storage options
+                const token = localStorage.getItem('token');
+                const username = localStorage.getItem('username');
+                const adminname = localStorage.getItem('adminname');
+                const orgName = localStorage.getItem('org_name');
+                
+                // Additional check for user display name from different login flows
+                const userDisplayName = localStorage.getItem('userDisplayName');
+                
+                if (token && (username || adminname || orgName || userDisplayName)) {
+                    // User is logged in, display info
+                    userInfoSection.style.display = 'block';
+                    
+                    // Set user name - try all possible sources and use a default if all are undefined
+                    const displayName = username || adminname || orgName || userDisplayName || "User";
+                    userName.textContent = displayName;
+                    
+                    // Set user avatar text (first letter of name)
+                    userAvatar.textContent = displayName.charAt(0).toUpperCase();
+                    
+                    // Set account type
+                    if (adminname) {
+                        accountType.textContent = 'Admin Account';
+                        accountDot.style.backgroundColor = '#f59e0b'; // Warning color for admin
+                    } else if (orgName) {
+                        accountType.textContent = 'Organization Account';
+                        accountDot.style.backgroundColor = '#22c55e'; // Success color for organization
+                    } else {
+                        accountType.textContent = 'Individual Account';
+                        accountDot.style.backgroundColor = '#22c55e'; // Success color for individual
+                    }
+                } else {
+                    // User not logged in, hide info
+                    userInfoSection.style.display = 'none';
+                }
+            }
+        }
+        
+        // Initialize the draggable and resizable charts panel
+        function initChartsPanel() {
+            const chartsPanel = document.getElementById('charts-panel');
+            const dragHandle = document.getElementById('panel-drag-handle');
+            const resizeHandle = document.getElementById('panel-resize-handle');
+            const toggleBtn = document.getElementById('toggle-charts-btn');
+            const closeBtn = document.getElementById('close-panel-btn');
+            
+            if (!chartsPanel || !dragHandle || !toggleBtn) {
+                console.error('Charts panel elements not found');
+                return;
+            }
+            
+            // Toggle panel visibility
+            toggleBtn.addEventListener('click', function() {
+                console.log("Toggle charts button clicked");
+                
+                // Toggle the show class
+                chartsPanel.classList.toggle('show');
+                
+                // Update body class
+                if (chartsPanel.classList.contains('show')) {
+                    document.body.classList.remove('charts-hidden');
+                    console.log("Charts panel shown");
+                    
+                    // If charts exist, try to render them
+                    setTimeout(function() {
+                        if (typeof window.renderAllCharts === 'function') {
+                            window.renderAllCharts();
+                            console.log("Attempting to render charts");
+                        }
+                    }, 100);
+                } else {
+                    document.body.classList.add('charts-hidden');
+                    console.log("Charts panel hidden");
+                }
+            });
+            
+            // Close panel
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    chartsPanel.classList.remove('show');
+                    document.body.classList.add('charts-hidden');
+                    console.log("Charts panel closed");
+                });
+            }
+            
+            // Make panel draggable
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            
+            dragHandle.addEventListener('mousedown', dragStart);
+            
+            function dragStart(e) {
+                initialX = e.clientX - chartsPanel.offsetLeft;
+                initialY = e.clientY - chartsPanel.offsetTop;
+                
+                isDragging = true;
+                chartsPanel.classList.add('dragging');
+            }
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                e.preventDefault();
+                
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                
+                // Ensure panel stays within viewport
+                const maxX = window.innerWidth - chartsPanel.offsetWidth;
+                const maxY = window.innerHeight - chartsPanel.offsetHeight;
+                
+                currentX = Math.max(0, Math.min(currentX, maxX));
+                currentY = Math.max(0, Math.min(currentY, maxY));
+                
+                chartsPanel.style.left = currentX + 'px';
+                chartsPanel.style.top = currentY + 'px';
+            }
+            
+            function dragEnd() {
+                if (isDragging) {
+                    initialX = currentX;
+                    initialY = currentY;
+                    
+                    isDragging = false;
+                    chartsPanel.classList.remove('dragging');
+                    
+                    // Save position to localStorage
+                    localStorage.setItem('chartsPanelLeft', currentX);
+                    localStorage.setItem('chartsPanelTop', currentY);
+                }
+            }
+            
+            // Make panel resizable
+            let isResizing = false;
+            let startWidth, startHeight, startX, startY;
+            
+            resizeHandle.addEventListener('mousedown', resizeStart);
+            
+            function resizeStart(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isResizing = true;
+                startWidth = chartsPanel.offsetWidth;
+                startHeight = chartsPanel.offsetHeight;
+                startX = e.clientX;
+                startY = e.clientY;
+                
+                chartsPanel.classList.add('resizing');
+            }
+            
+            document.addEventListener('mousemove', resize);
+            
+            function resize(e) {
+                if (!isResizing) return;
+                
+                const newWidth = startWidth + (e.clientX - startX);
+                const newHeight = startHeight + (e.clientY - startY);
+                
+                // Set minimum size
+                const minWidth = 300;
+                const minHeight = 200;
+                
+                // Set maximum size
+                const maxWidth = window.innerWidth - chartsPanel.offsetLeft;
+                const maxHeight = window.innerHeight - chartsPanel.offsetTop;
+                
+                chartsPanel.style.width = Math.max(minWidth, Math.min(newWidth, maxWidth)) + 'px';
+                chartsPanel.style.height = Math.max(minHeight, Math.min(newHeight, maxHeight)) + 'px';
+                
+                // Update charts to fit new size
+                renderCharts();
+            }
+            
+            document.addEventListener('mouseup', resizeEnd);
+            
+            function resizeEnd() {
+                if (isResizing) {
+                    isResizing = false;
+                    chartsPanel.classList.remove('resizing');
+                    
+                    // Save size to localStorage
+                    localStorage.setItem('chartsPanelWidth', chartsPanel.style.width);
+                    localStorage.setItem('chartsPanelHeight', chartsPanel.style.height);
+                    
+                    // Re-render charts to fit new size
+                    renderCharts();
+                }
+            }
+            
+            // Restore panel state
+            function restorePanelState() {
+                const savedLeft = localStorage.getItem('chartsPanelLeft');
+                const savedTop = localStorage.getItem('chartsPanelTop');
+                const savedWidth = localStorage.getItem('chartsPanelWidth');
+                const savedHeight = localStorage.getItem('chartsPanelHeight');
+                
+                if (savedLeft) chartsPanel.style.left = savedLeft + 'px';
+                if (savedTop) chartsPanel.style.top = savedTop + 'px';
+                if (savedWidth) chartsPanel.style.width = savedWidth;
+                if (savedHeight) chartsPanel.style.height = savedHeight;
+                
+                // Set initial position if not saved previously
+                if (!savedLeft && !savedTop) {
+                    chartsPanel.style.right = '20px';
+                    chartsPanel.style.top = '60px';
+                }
+                
+                // Show panel on load if it was visible before
+                const wasVisible = localStorage.getItem('chartsPanelVisible') === 'true';
+                if (wasVisible) {
+                    chartsPanel.classList.add('show');
+                    chartsPanel.style.display = 'flex';
+                    setTimeout(renderCharts, 100);
+                } else {
+                    chartsPanel.classList.remove('show');
+                    chartsPanel.style.display = 'none';
+                }
+            }
+            
+            // Function to render all charts
+            function renderCharts() {
+                console.log('Attempting to render charts...');
+                
+                // Always use our custom chart-functions.js implementation
+                if (typeof window.initializeChartsWithTestData === 'function') {
+                    console.log('Using initializeChartsWithTestData function');
+                    window.initializeChartsWithTestData();
+                    return;
+                }
+                
+                if (typeof window.renderAllCharts === 'function') {
+                    console.log('Using renderAllCharts function from chart-functions.js');
+                    window.renderAllCharts();
+                    return;
+                }
+                
+                console.error('Chart initialization functions not available, trying to load chart-functions.js');
+                
+                // Try loading chart-functions.js
+                const script = document.createElement('script');
+                script.src = 'static/js/chart-functions.js?v=' + new Date().getTime();
+                script.onload = function() {
+                    console.log('chart-functions.js loaded successfully');
+                    if (typeof window.renderAllCharts === 'function') {
+                        window.renderAllCharts();
+                    } else if (typeof window.initializeChartsWithTestData === 'function') {
+                        window.initializeChartsWithTestData();
+                    } else {
+                        console.error('Chart functions still not available after loading');
+                    }
+                };
+                script.onerror = function() {
+                    console.error('Failed to load chart-functions.js');
+                };
+                document.head.appendChild(script);
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                // Ensure panel stays within viewport
+                const maxX = window.innerWidth - chartsPanel.offsetWidth;
+                const maxY = window.innerHeight - chartsPanel.offsetHeight;
+                
+                // Get current position
+                const currentLeft = parseInt(chartsPanel.style.left) || 0;
+                const currentTop = parseInt(chartsPanel.style.top) || 0;
+                
+                // Adjust if needed
+                if (currentLeft > maxX) {
+                    chartsPanel.style.left = maxX + 'px';
+                }
+                
+                if (currentTop > maxY) {
+                    chartsPanel.style.top = maxY + 'px';
+                }
+                
+                // Re-render charts
+                renderCharts();
+            });
+            
+            // Restore panel state
+            restorePanelState();
+        }
+        
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            // Create toast container if it doesn't exist
+            let toastContainer = document.querySelector('.toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container';
+                document.body.appendChild(toastContainer);
+            }
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            // Add to container
+            toastContainer.appendChild(toast);
+            
+            // Remove after animation
+            setTimeout(function() {
+                toast.classList.add('fade-out');
+                setTimeout(function() {
+                    toast.remove();
+                }, 500);
+            }, 3000);
+        }
+
+        // Global setLoading function
+        function setLoading(isLoading) {
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            
+            if (loadingIndicator) {
+                loadingIndicator.style.display = isLoading ? 'flex' : 'none';
+            }
+        }
+
+        // Source information display toggle
+        function toggleSourceInfo(element) {
+            const sourceInfo = element.nextElementSibling;
+            if (sourceInfo.style.display === 'none' || !sourceInfo.style.display) {
+                sourceInfo.style.display = 'block';
+                element.textContent = 'Hide Sources';
+            } else {
+                sourceInfo.style.display = 'none';
+                element.textContent = 'Show Sources';
+            }
+        }
+    </script>
+    
+    <!-- UI Fix Script - Add last to override existing behavior -->
+    <script src="static/js/fix-ui.js?v=1.0.0"></script>
+    
+    <!-- Minimal chat fixes - handles duplicate inputs and missing responses -->
+    <script src="static/js/chat-fix.js?v=1.0.0"></script>
+    
+    <!-- Login display fixes - handles login button and username display -->
+    <script src="static/js/login-fix.js?v=1.0.0"></script>
+    
+    <!-- User display manager - replaces previous fixes with better solution -->
+    <script src="static/js/user-display.js?v=1.0.0"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="static/js/upload.js?v=1.2.1"></script>
+    <script src="static/js/chat.js?v=1.2.5"></script>
+    <script src="static/js/toast.js?v=1.0.0"></script>
+    
+    <!-- Debug script to force general mode -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fixBtn = document.getElementById('fix-general-mode-btn');
+            if (fixBtn) {
+                fixBtn.addEventListener('click', function() {
+                    emergencyFixGeneralMode();
+                });
+            }
+        });
+        
+        // Emergency function to force general mode regardless of app state
+        function emergencyFixGeneralMode() {
+            console.log('Emergency general mode fix activated');
+            
+            try {
+                // 1. Reset all critical state variables
+                window.currentChatMode = 'general';
+                window.currentChatContextId = null;
+                window.focusedDocumentId = null;
+                
+                // 2. Clear localStorage state
+                localStorage.setItem('chatMode', 'general');
+                localStorage.removeItem('chatContextId');
+                localStorage.removeItem('focusedDocumentId');
+                localStorage.removeItem('focusedDocumentName');
+                
+                // 3. Update UI elements directly
+                const generalBtn = document.getElementById('general-mode');
+                const docBtn = document.getElementById('document-mode');
+                const docPanel = document.getElementById('active-document-panel');
+                const activeDocDisplay = document.getElementById('active-document-display');
+                
+                // Update button states
+                if (generalBtn) generalBtn.classList.add('active');
+                if (docBtn) docBtn.classList.remove('active');
+                if (docPanel) docPanel.classList.remove('active');
+                
+                // Hide document panels
+                if (docPanel) docPanel.style.display = 'none';
+                if (activeDocDisplay) activeDocDisplay.style.display = 'none';
+                
+                // Remove document mode class from body
+                document.body.classList.remove('document-mode');
+                
+                // 4. Update input placeholder
+                const chatInput = document.querySelector('.chat-input input');
+                if (chatInput) {
+                    chatInput.placeholder = 'Ask any general question about finance, budgeting, or upload a document...';
+                }
+                
+                // 5. Add success message to the chat
+                const messageFunc = window.addMessage || function(msg) {
+                    const chatMessages = document.querySelector('.chat-messages');
+                    if (chatMessages) {
+                        const div = document.createElement('div');
+                        div.className = 'message assistant';
+                        div.innerHTML = `<div class="message-avatar">🤖</div><div class="message-content">${msg}</div>`;
+                        chatMessages.appendChild(div);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                };
+                
+                messageFunc('Switched to general chat mode. You can ask any general question now.', false);
+                
+                // 6. Try calling the standard function too if available
+                if (window.updateChatModeIndicator) {
+                    window.updateChatModeIndicator();
+                }
+                
+                // 7. Show success notification
+                if (window.showToast) {
+                    window.showToast('General mode activated', 'success');
+                } else {
+                    // Fallback notification if showToast isn't available
+                    const toast = document.createElement('div');
+                    toast.style.position = 'fixed';
+                    toast.style.bottom = '60px';
+                    toast.style.right = '20px';
+                    toast.style.backgroundColor = '#10B981';
+                    toast.style.color = 'white';
+                    toast.style.padding = '10px 15px';
+                    toast.style.borderRadius = '4px';
+                    toast.style.zIndex = '10000';
+                    toast.textContent = 'General mode activated';
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                }
+                
+                console.log('Emergency general mode fix completed successfully');
+            } catch (error) {
+                console.error('Error during emergency general mode fix:', error);
+            }
+            
+            return false; // Prevent default action
+        }
+        
+        // Original forceGeneralMode function retained for compatibility
+        function forceGeneralMode() {
+            console.log('Original forceGeneralMode called, redirecting to emergency fix');
+            return emergencyFixGeneralMode();
+        }
+    </script>
+
+    <script>
+        // Initialize the user display on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserAccountDisplay();
+            
+            // Also check for changes in localStorage
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'token' || e.key === 'username' || e.key === 'adminname' || e.key === 'org_name') {
+                    updateUserAccountDisplay();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

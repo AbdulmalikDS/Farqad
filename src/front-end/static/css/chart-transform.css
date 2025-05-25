@@ -1,0 +1,83 @@
+/* 
+ * Chart Transform CSS
+ * This file uses transform and positioning to create a more spaced-out dashboard
+ */
+
+/* Position charts with absolute positioning for maximum spacing control */
+.chart-container-wrapper {
+  position: relative !important;
+  z-index: 1 !important;
+  transform: scale(0.9) !important; /* Slightly scale down to create space */
+  transform-origin: center top !important;
+  clear: both !important;
+}
+
+/* Primary chart with special treatment */
+.primary-chart-wrapper {
+  margin: 50px auto 70px !important;
+  max-width: 85% !important;
+  transform: scale(0.95) !important;
+}
+
+/* Style the chart containers more distinctively */
+.chart-container {
+  overflow: visible !important;
+  background: linear-gradient(135deg, rgba(43, 36, 90, 0.7) 0%, rgba(27, 22, 58, 0.85) 100%) !important;
+  padding: 20px !important;
+  border-radius: 16px !important;
+  transition: all 0.3s ease-out !important;
+}
+
+/* Chart container hover effects */
+.chart-container:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 10px 15px rgba(124, 58, 237, 0.2) !important;
+}
+
+/* Panel content with large spacing */
+.panel-content {
+  padding: 25px 10px !important;
+}
+
+/* Chart rows with spacious arrangement */
+.charts-row {
+  margin: 60px 0 !important;
+  justify-content: space-around !important;
+}
+
+/* Half-width items with space between */
+.half-width {
+  width: 45% !important;
+  margin: 0 2.5% !important;
+}
+
+/* Clear float between rows */
+.charts-row::after {
+  content: "";
+  display: table;
+  clear: both;
+  height: 40px;
+}
+
+/* Financial summary section with more separation */
+.financial-summary {
+  margin-top: 70px !important;
+  padding-top: 30px !important;
+  border-top: 2px solid rgba(138, 79, 255, 0.3) !important;
+}
+
+/* Financial table with clear separation from charts */
+.financial-table-wrapper {
+  margin-top: 50px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(138, 79, 255, 0.2) !important;
+}
+
+/* Add visualization of the spacing */
+.panel-content > div:not(:last-child)::after {
+  content: "";
+  display: block;
+  height: 40px;
+  margin: 20px 0;
+  background: linear-gradient(to right, transparent, rgba(138, 79, 255, 0.1), transparent);
+} 

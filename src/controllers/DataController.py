@@ -54,4 +54,3 @@ class DataController(BaseController):
 
         return cleaned_file_name
 
-
