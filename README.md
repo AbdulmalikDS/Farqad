@@ -43,7 +43,7 @@
 - FastAPI for API endpoints
 - MongoDB for document and user data storage
 - Qdrant for vector database and document embeddings
-- OpenAI integration for LLM-powered chat and analytics
+- Pulling ALLaM with Ollama for LLM-powered chat and analytics
 - PyMuPDF for PDF processing
 
 ### Frontend
@@ -59,8 +59,10 @@
 ### Prerequisites
 - Python 3.10+
 - MongoDB
-- Ollama (ALLaM)
-- Docker 
+- Ollama(ALLaM)
+- Docker
+- conda
+- ubuntu
 
 ### Installation
 
@@ -122,7 +124,7 @@ mini-rag-app/
 
 Key configuration options in `config.py`:
 - MongoDB connection settings
-- OpenAI API configuration
+- API configuration for local host to use the LLM locally
 - Vector database settings
 - Language detection settings
 
